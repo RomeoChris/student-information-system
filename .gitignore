@@ -1,0 +1,17 @@
+composer.lock
+data.ini
+.env.dist
+downloads/
+symfony.lock
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/public/static/
+/var/
+/vendor/
+/.idea/
+###< symfony/framework-bundle ###
+
+###> symfony/web-server-bundle ###
+.web-server-pid
+###< symfony/web-server-bundle ###
