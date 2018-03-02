@@ -43,7 +43,7 @@ class Authenticator extends Controller
         return $this->profileStorage->getById($this->identifier);
     }
 
-    public function requireLoggedIn() :Response
+    public function requireLoggedIn()
     {
         if (!$this->isLoggedIn())
             return $this->redirectToRoute('index');
