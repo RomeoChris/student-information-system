@@ -7,7 +7,6 @@ use App\Models\Profile;
 use App\Storages\IStorage;
 use App\Core\Session\AppSession;
 use App\Core\Collection\AppCollection;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class Authenticator extends Controller
@@ -43,7 +42,7 @@ class Authenticator extends Controller
         return $this->profileStorage->getById($this->identifier);
     }
 
-    public function requireLoggedIn() :Response
+    public function requireLoggedIn()
     {
         if (!$this->isLoggedIn())
             return $this->redirectToRoute('index');

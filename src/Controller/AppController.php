@@ -101,4 +101,24 @@ abstract class AppController extends Controller
         $userId = $this->getSession()->getInt('identifier');
         return $this->getStorageManager()->getProfileStorage()->getById($userId);
     }
+
+    protected function renderTemplate(string $view = '', array $parameters = []) :Response
+    {
+        return $this->render($view, array_merge($parameters, $this->commonParameters()));
+    }
+
+    private function commonParameters() :array
+    {
+        return [
+            'role' => $this->getProfile()->getRole(),
+            'admin' => $this->getAuthenticator()->isAdmin(),
+            'student' => $this->getAuthenticator()->isLoggedIn(),
+            'footNote' => 'SIS 2017',
+            'lecturer' => $this->getAuthenticator()->isLecturer(),
+            'username' => $this->getProfile()->getUsername(),
+            'headAdmin' => $this->getAuthenticator()->isHeadAdmin(),
+            'brandName' => 'SIS',
+            'brandName2' => 'SIS'
+        ];
+    }
 }
