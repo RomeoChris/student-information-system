@@ -1,0 +1,26 @@
+stages:
+  - install-dependecies
+  - update-site
+
+install-dependencies:
+  stage: install-dependecies
+  script:
+    - cd $PROJECT_DIR
+    - sudo composer install
+
+  only:
+    - master
+
+update-website:
+  stage: update-site
+  script:
+    - cd $PROJECT_DIR
+    - sudo git reset --hard && sudo git fetch -p --all
+    - sudo git checkout $VERSION && sudo git pull
+    - sudo cp /home/ubuntu/data.ini $PROJECT_DIR
+    - sudo chown -R www-data:www-data $PROJECT_DIR
+    - sudo chmod -R 775 $PROJECT_DIR
+    - sudo service apache2 restart
+
+  only:
+    - master
