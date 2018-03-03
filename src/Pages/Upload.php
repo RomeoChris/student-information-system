@@ -8,7 +8,6 @@ use App\Models\Note;
 use App\Core\File\File;
 use App\Models\TimeTable;
 use App\Controller\AppController;
-use function App\Lib\uploadErrors;
 
 class Upload extends AppController
 {
@@ -24,7 +23,7 @@ class Upload extends AppController
         $this->post = $this->getPost();
         $this->webPath = '/downloads/';
         $this->rootPath = $this->getRootPath();
-        $this->uploadErrors = uploadErrors();
+        $this->uploadErrors = File::uploadErrors();
         $this->storageManager = $this->getStorageManager();
     }
 
