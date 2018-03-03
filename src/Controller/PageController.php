@@ -36,11 +36,6 @@ class PageController extends AppController
     public function newStudent() {}
 
     /**
-     * @Route("/timetables/upload/", name="uploadTimetable")
-     */
-    public function uploadTimetable() {}
-
-    /**
      * @Route("/timetables/", name="timetables")
      */
     public function timetables() {}
@@ -49,11 +44,6 @@ class PageController extends AppController
      * @Route("/notes/", name="notes")
      */
     public function notes() {}
-
-    /**
-     * @Route("/notes/upload/", name="uploadNotes")
-     */
-    public function uploadNotes() {}
 
     /**
      * @Route("/announcements/", name="announcements")
