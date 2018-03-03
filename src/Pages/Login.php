@@ -51,7 +51,7 @@ class Login extends AppController
             }
         }
 
-        return $this->render('login/login.html.twig', [
+        return $this->render('login.html.twig', [
             'token' => $this->token->generate('loginToken'),
             'errors' => $errorList,
             'username' => $this->post->get('username'),
