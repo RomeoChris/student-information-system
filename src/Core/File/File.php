@@ -31,8 +31,17 @@ class File extends AppCollection
 
     public function upload(string $rootPath = '') :bool
     {
-        $fullPath = $rootPath . $this->fileName;
-        return move_uploaded_file($this->getTempName(), $fullPath);
+        return move_uploaded_file($this->getTempName(), $rootPath);
+    }
+
+    public function getRootPath(string $rootPath = '') :string
+    {
+        return $rootPath . $this->fileName;
+    }
+
+    public function getDownloadPath(string $webPath = '') :string
+    {
+        return $webPath . $this->fileName;
     }
 
     public function setFileName() :void
