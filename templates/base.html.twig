@@ -211,6 +211,13 @@
             "serverSide": true,
             "ajax": "{{ path('apiTimetables') }}"
         });
+
+        $('#notes_datatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ path('apiNotes') }}"
+        });
+
     });
 </script>
 {% endblock %}
