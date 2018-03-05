@@ -24,15 +24,12 @@ class Login extends AppController
         $errorList = [];
 
         if ($this->getAuthenticator()->isLoggedIn())
-            $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('dashboard');
 
         if ($this->getRequest()->isMethod('post'))
         {
-            var_dump($_SESSION);
-            var_dump($this->post);
             if ($this->token->validate('loginToken', $this->post->get('token')))
             {
-                echo "token verified";
                 $username = $this->post->get('username');
                 $password = $this->post->get('password');
 
