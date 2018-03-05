@@ -6,7 +6,7 @@ install-dependencies:
   stage: install-dependecies
   script:
     - cd $PROJECT_DIR
-    - sudo composer install
+    - sudo composer update
 
   only:
     - master
