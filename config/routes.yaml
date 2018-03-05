@@ -25,3 +25,11 @@ timetables:
 apiTimetables:
     path: /api/timetables/
     controller: App\Controller\ApiController:timetables
+
+notes:
+    path: /downloads/notes/
+    controller: App\Pages\Download:notes
+
+apiNotes:
+    path: /api/notes/
+    controller: App\Controller\ApiController:notes
