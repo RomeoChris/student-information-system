@@ -42,12 +42,6 @@ class Authenticator extends Controller
         return $this->profileStorage->getById($this->identifier);
     }
 
-    public function requireLoggedIn()
-    {
-        if (!$this->isLoggedIn())
-            return $this->redirectToRoute('index');
-    }
-
     public function isLoggedIn() :bool
     {
         return $this->session->has('identifier') && $this->session->has('username');
@@ -55,21 +49,18 @@ class Authenticator extends Controller
 
     public function requireHeadAdmin() :void
     {
-        $this->requireLoggedIn();
         if ($this->getProfile()->getRole() !=  'head')
             $this->getAuthorityMessage();
     }
 
     public function requireAdmin() :void
     {
-        $this->requireLoggedIn();
         if ($this->getProfile()->getRole() !=  ('admin' || 'head'))
             $this->getAuthorityMessage();
     }
 
     public function requireLecturer() :void
     {
-        $this->requireLoggedIn();
         if ($this->getProfile()->getRole() !=  ('lecturer' || 'admin' || 'head'))
             $this->getAuthorityMessage();
     }
