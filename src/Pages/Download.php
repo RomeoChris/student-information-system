@@ -17,4 +17,14 @@ class Download extends AppController
             'pageTitle' => 'Timetables download'
         ]);
     }
+
+    public function notes() :Response
+    {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        return $this->renderTemplate('download/notes.html.twig', [
+            'pageTitle' => 'Notes downloads'
+        ]);
+    }
 }
