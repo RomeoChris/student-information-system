@@ -8,6 +8,7 @@ use App\Models\Note;
 use App\Core\File\File;
 use App\Models\TimeTable;
 use App\Controller\AppController;
+use Symfony\Component\HttpFoundation\Response;
 
 class Upload extends AppController
 {
@@ -91,9 +92,11 @@ class Upload extends AppController
         ]);
     }
 
-    public function timetables()
+    public function timetables() :Response
     {
-        $this->getAuthenticator()->requireLecturer();
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
         $errorList = [];
 
         if ($this->getRequest()->isMethod('post'))
