@@ -36,11 +36,6 @@ class PageController extends AppController
     public function newStudent() {}
 
     /**
-     * @Route("/notes/", name="notes")
-     */
-    public function notes() {}
-
-    /**
      * @Route("/announcements/", name="announcements")
      */
     public function announcements() {}
