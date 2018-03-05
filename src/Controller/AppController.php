@@ -57,13 +57,13 @@ abstract class AppController extends Controller
 	protected function getDatabase() :Database
 	{
 		$db = self::getDatabaseConfig();
-		$driver = $db->get('driver');
-		$host = $db->get('hostname');
-		$database = $db->get('database');
-		$username = $db->get('username');
-		$password = $db->get('password');
-		$port = $db->get('port');
-		$connectionString = "$driver:host=$host;dbname=$database;port=$port";
+        $port = $db->getString('port');
+		$driver = $db->getString('driver');
+		$hostname = $db->getString('hostname');
+		$database = $db->getString('database');
+		$username = $db->getString('username');
+		$password = $db->getString('password');
+		$connectionString = "$driver:host=$hostname;dbname=$database;port=$port";
 		return Database::getInstance($connectionString, $username, $password);
 	}
 
