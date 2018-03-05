@@ -8,6 +8,7 @@ use App\Core\Token\Token;
 use App\Core\Database\Database;
 use App\Storages\StorageManager;
 use App\Core\Session\AppSession;
+use App\Core\DataTable\DataTable;
 use App\Core\Collection\AppCollection;
 use App\Core\Configuration\Configuration;
 use App\Core\Authenticator\Authenticator;
@@ -57,7 +58,7 @@ abstract class AppController extends Controller
 	{
 		$db = self::getDatabaseConfig();
 		$driver = $db->get('driver');
-		$host = $db->get('host');
+		$host = $db->get('hostname');
 		$database = $db->get('database');
 		$username = $db->get('username');
 		$password = $db->get('password');
@@ -105,6 +106,11 @@ abstract class AppController extends Controller
     protected function renderTemplate(string $view = '', array $parameters = []) :Response
     {
         return $this->render($view, array_merge($parameters, $this->commonParameters()));
+    }
+
+    protected function getDataTable() :DataTable
+    {
+        return new DataTable($this->getDatabaseConfig());
     }
 
     private function commonParameters() :array
