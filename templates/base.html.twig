@@ -218,6 +218,12 @@
             "ajax": "{{ path('apiNotes') }}"
         });
 
+        $('#announcements_datatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ path('apiAnnouncements') }}"
+        });
+
     });
 </script>
 {% endblock %}
