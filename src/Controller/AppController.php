@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ServerBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-abstract class AppController extends Controller
+abstract class AppController extends AbstractController
 {
 	protected static $ds = DIRECTORY_SEPARATOR;
 
