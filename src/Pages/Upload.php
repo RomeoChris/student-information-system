@@ -29,7 +29,9 @@ class Upload extends AppController
 
     public function notes()
     {
-        $this->getAuthenticator()->requireLecturer();
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
         $errorList = [];
 
         if ($this->getRequest()->isMethod('post'))

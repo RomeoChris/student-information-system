@@ -4,23 +4,24 @@ namespace App\Pages;
 
 
 use App\Controller\AppController;
+use Symfony\Component\HttpFoundation\Response;
 
 class Dashboard extends AppController
 {
     private $database;
-    private $authenticator;
     private $storageManager;
 
     public function __construct()
     {
         $this->database = $this->getDatabase();
-        $this->authenticator = $this->getAuthenticator();
         $this->storageManager = $this->getStorageManager();
     }
 
-    public function index()
+    public function index() :Response
     {
-        $this->authenticator->requireLoggedIn();
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
         return $this->renderTemplate('dashboard.html.twig', [
             'online' => 2,
             'pageTitle' => 'Dashboard',

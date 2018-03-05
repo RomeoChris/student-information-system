@@ -17,3 +17,11 @@ uploadNotes:
 uploadTimetables:
     path: /timetables/upload/
     controller: App\Pages\Upload:timetables
+
+timetables:
+    path: /downloads/timetables/
+    controller: App\Pages\Download:timetables
+
+apiTimetables:
+    path: /api/timetables/
+    controller: App\Controller\ApiController:timetables
