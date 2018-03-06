@@ -64,7 +64,7 @@ class Announcement extends AppController
             'errors' => $errorList,
             'success' => $this->getSession()->flash('announcementSuccess'),
             'message' => $this->post->get('message'),
-            'pageTitle' => 'Post new notice'
+            'pageTitle' => 'Add new announcement'
         ]);
 	}
 
