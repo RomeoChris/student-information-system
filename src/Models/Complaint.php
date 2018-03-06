@@ -12,13 +12,15 @@ class Complaint extends Model
     private $author;
     private $message;
     private $dateCreated;
+    private $dateModified;
 
     public function __construct(
         int $id = 0,
         string $title = '',
         string $author = '',
         string $message = '',
-        string $dateCreated = ''
+        string $dateCreated = '',
+        string $dateModified = ''
     )
     {
         $this->id = $id;
@@ -26,6 +28,7 @@ class Complaint extends Model
         $this->author = $author;
         $this->message = $message;
         $this->dateCreated = $dateCreated;
+        $this->dateModified = $dateModified;
     }
 
     public static function empty() :self { return new self; }
@@ -33,6 +36,7 @@ class Complaint extends Model
     public function getAuthor() :string { return $this->author; }
     public function getMessage() :string { return $this->message; }
     public function getDateCreated() :string { return $this->dateCreated; }
+    public function getDateModified() :string { return $this->dateModified; }
 
     public function setTitle(string $title = '') :void
     {
@@ -49,13 +53,19 @@ class Complaint extends Model
         $this->message = $message;
     }
 
+    public function setDateModified(string $dateModified = '') :void
+    {
+        $this->dateModified = $dateModified;
+    }
+
     public function saveAsData(): array
     {
         return [
             'title' => $this->title,
             'creator' => $this->author,
             'message' => $this->message,
-            'date_added' => $this->dateCreated
+            'date_added' => $this->dateCreated,
+            'date_updated' => $this->dateModified
         ];
     }
 
@@ -66,7 +76,8 @@ class Complaint extends Model
             $data->getString('title'),
             $data->getString('author'),
             $data->getString('message'),
-            $data->getString('date_added')
+            $data->getString('date_added'),
+            $data->getString('date_updated')
         );
     }
 }
