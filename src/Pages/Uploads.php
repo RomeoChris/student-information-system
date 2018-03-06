@@ -10,7 +10,7 @@ use App\Models\TimeTable;
 use App\Controller\AppController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Upload extends AppController
+class Uploads extends AppController
 {
     private $post;
     private $webPath;

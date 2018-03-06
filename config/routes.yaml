@@ -11,16 +11,16 @@ logout:
     controller: App\Controller\PageController::logout
 
 uploadNotes:
-    path: /notes/upload/
-    controller: App\Pages\Upload:notes
+    path: /uploads/notes/
+    controller: App\Pages\Uploads:notes
 
 uploadTimetables:
-    path: /timetables/upload/
-    controller: App\Pages\Upload:timetables
+    path: /uploads/timetables/
+    controller: App\Pages\Uploads:timetables
 
 timetables:
     path: /downloads/timetables/
-    controller: App\Pages\Download:timetables
+    controller: App\Pages\Downloads:timetables
 
 apiTimetables:
     path: /api/timetables/
@@ -28,7 +28,7 @@ apiTimetables:
 
 notes:
     path: /downloads/notes/
-    controller: App\Pages\Download:notes
+    controller: App\Pages\Downloads:notes
 
 apiNotes:
     path: /api/notes/
@@ -36,29 +36,23 @@ apiNotes:
 
 announcements:
     path: /announcements/
-    controller: App\Pages\Announcement:index
+    controller: App\Pages\Announcements:index
 
 viewAnnouncement:
     path: /announcements/view/{id}/
-    controller: App\Pages\Announcement:view
-    requirements:
-        id: '\d+'
+    controller: App\Pages\Announcements:view
 
 newAnnouncement:
     path: /announcements/new/
-    controller: App\Pages\Announcement:new
+    controller: App\Pages\Announcements:new
 
 editAnnouncement:
     path: /announcements/edit/{id}/
-    controller: App\Pages\Announcement:edit
-    requirements:
-        id: '\d+'
+    controller: App\Pages\Announcements:edit
 
 deleteAnnouncement:
     path: /announcements/delete/{id}/
-    controller: App\Pages\Announcement:delete
-    requirements:
-        id: '\d+'
+    controller: App\Pages\Announcements:delete
 
 apiAnnouncements:
     path: /api/announcements/
