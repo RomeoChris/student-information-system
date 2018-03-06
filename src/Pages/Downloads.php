@@ -6,7 +6,7 @@ namespace App\Pages;
 use App\Controller\AppController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Download extends AppController
+class Downloads extends AppController
 {
     public function timetables() :Response
     {

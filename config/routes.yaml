@@ -20,7 +20,7 @@ uploadTimetables:
 
 timetables:
     path: /downloads/timetables/
-    controller: App\Pages\Download:timetables
+    controller: App\Pages\Downloads:timetables
 
 apiTimetables:
     path: /api/timetables/
@@ -28,7 +28,7 @@ apiTimetables:
 
 notes:
     path: /downloads/notes/
-    controller: App\Pages\Download:notes
+    controller: App\Pages\Downloads:notes
 
 apiNotes:
     path: /api/notes/
