@@ -11,12 +11,12 @@ logout:
     controller: App\Controller\PageController::logout
 
 uploadNotes:
-    path: /notes/upload/
-    controller: App\Pages\Upload:notes
+    path: /uploads/notes/
+    controller: App\Pages\Uploads:notes
 
 uploadTimetables:
-    path: /timetables/upload/
-    controller: App\Pages\Upload:timetables
+    path: /uploads/timetables/
+    controller: App\Pages\Uploads:timetables
 
 timetables:
     path: /downloads/timetables/
