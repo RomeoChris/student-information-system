@@ -36,6 +36,9 @@ class Complaints extends AppController
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
 
+        if ($this->getAuthenticator()->isLecturer())
+            return $this->redirectToRoute('complaints');
+
         $errorList = [];
 
         $date = date('Y-m-d h:i:sa');
@@ -54,7 +57,7 @@ class Complaints extends AppController
 
                 if ($this->complaintStorage->save($complaint))
                 {
-                    $this->getSession()->set('success', 'Complaint has been sent to our admins. Thanks');
+                    $this->getSession()->set('saveSuccess', 'Complaint has been sent to our admins. Thanks');
                     return $this->redirectToRoute('newComplaint');
                 }
                 else
@@ -66,8 +69,56 @@ class Complaints extends AppController
             'title' => $title,
             'errors' => $errorList,
             'message' => $message,
-            'success' => $this->getSession()->flash('success'),
+            'success' => $this->getSession()->flash('saveSuccess'),
             'pageTitle' => 'Add new complaint',
         ]);
+    }
+
+    public function view($id = '') :Response
+    {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        $this->getAuthenticator()->requireAdmin();
+
+        $complaint = $this->getComplaint((int)$id ?? 0);
+
+        if ($complaint->isSaved())
+        {
+            return $this->renderTemplate('complaints/view.html.twig', [
+                'id' => $complaint->getIdentifier(),
+                'title' => $complaint->getTitle(),
+                'author' => $complaint->getAuthor(),
+                'message' => $complaint->getMessage(),
+                'pageTitle' => $complaint->getTitle()
+            ]);
+        }
+        return $this->redirectToRoute('complaints');
+    }
+
+    public function delete($id = '') :Response
+    {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        $this->getAuthenticator()->requireAdmin();
+
+        $complaint = $this->getComplaint((int)$id ?? 0);
+
+        if ($complaint->isSaved())
+        {
+            if ($this->complaintStorage->delete($complaint))
+            {
+                $this->getSession()->set('deleteSuccess', 'Complaint deleted successfully');
+                return $this->redirectToRoute('complaints');
+            }
+            return $this->redirectToRoute('complaints');
+        }
+        return $this->redirectToRoute('complaints');
+    }
+
+    private function getComplaint(int $id = 0) :Complaint
+    {
+        return $this->complaintStorage->getById($id);
     }
 }
