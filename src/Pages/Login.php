@@ -43,9 +43,7 @@ class Login extends AppController
                     $errorList[] = 'Invalid login or password';
             }
             else
-            {
                 $errorList[] = 'Failed to authorize login. Try reloading page';
-            }
         }
 
         return $this->render('login.html.twig', [
