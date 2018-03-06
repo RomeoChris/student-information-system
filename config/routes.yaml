@@ -57,3 +57,23 @@ deleteAnnouncement:
 apiAnnouncements:
     path: /api/announcements/
     controller: App\Controller\ApiController:announcements
+
+complaints:
+    path: /complaints/
+    controller: App\Pages\Complaints:index
+
+newComplaint:
+    path: /complaints/new/
+    controller: App\Pages\Complaints:new
+
+viewComplaint:
+    path: /complaints/view/{id}/
+    controller: App\Pages\Complaints:view
+
+deleteComplaint:
+    path: /complaints/delete/{id}/
+    controller: App\Pages\Complaints:delete
+
+apiComplaints:
+    path: /api/complaints/
+    controller: App\Controller\ApiController:complaints

@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Core\DataTable\DataTable;
 use App\Conversions\NoteConversion;
 use App\Conversions\TimeTableConversion;
+use App\Conversions\ComplaintConversion;
 use App\Conversions\AnnouncementConversion;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,6 +38,16 @@ class ApiController extends AppController
     {
         $dataTable = $this->dataTable();
         $conversion = new AnnouncementConversion;
+        $dataTable->setTable($conversion->getTableName());
+        $dataTable->setColumns($conversion->getApiColumns());
+        $dataTable->setPrimaryKey($conversion->getIdField());
+        return new JsonResponse($dataTable->getData());
+    }
+
+    public function complaints() :Response
+    {
+        $dataTable = $this->dataTable();
+        $conversion = new ComplaintConversion;
         $dataTable->setTable($conversion->getTableName());
         $dataTable->setColumns($conversion->getApiColumns());
         $dataTable->setPrimaryKey($conversion->getIdField());

@@ -224,6 +224,12 @@
             "ajax": "{{ path('apiAnnouncements') }}"
         });
 
+        $('#complaints_datatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ path('apiComplaints') }}"
+        });
+
     });
 </script>
 {% endblock %}
