@@ -13,8 +13,8 @@ class Download extends AppController
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
 
-        return $this->renderTemplate('download/timetables.html.twig', [
-            'pageTitle' => 'Timetables download'
+        return $this->renderTemplate('downloads/timetables.html.twig', [
+            'pageTitle' => 'Timetables downloads'
         ]);
     }
 
@@ -23,7 +23,7 @@ class Download extends AppController
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
 
-        return $this->renderTemplate('download/notes.html.twig', [
+        return $this->renderTemplate('downloads/notes.html.twig', [
             'pageTitle' => 'Notes downloads'
         ]);
     }
