@@ -70,10 +70,6 @@ viewComplaint:
     path: /complaints/view/{id}/
     controller: App\Pages\Complaints:view
 
-editComplaint:
-    path: /complaints/edit/{id}/
-    controller: App\Pages\Complaints:edit
-
 deleteComplaint:
     path: /complaints/delete/{id}/
     controller: App\Pages\Complaints:delete
