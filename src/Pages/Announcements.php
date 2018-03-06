@@ -69,7 +69,7 @@ class Announcements extends AppController
         ]);
 	}
 
-	public function view($id = 0) :Response
+	public function view($id = '') :Response
 	{
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
@@ -86,7 +86,7 @@ class Announcements extends AppController
 		return $this->redirectToRoute('announcements');
 	}
 
-	public function edit($id = 0) :Response
+	public function edit($id = '') :Response
 	{
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
@@ -137,7 +137,7 @@ class Announcements extends AppController
         return $this->redirectToRoute('announcements');
 	}
 
-	public function delete($id = 0) :Response
+	public function delete($id = '') :Response
 	{
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
