@@ -3,10 +3,11 @@
 namespace App\Pages;
 
 
+use App\Models\Announcement;
 use App\Controller\AppController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Announcement extends AppController
+class Announcements extends AppController
 {
     private $post;
     private $announcementStorage;
@@ -22,7 +23,7 @@ class Announcement extends AppController
 	    if (!$this->getAuthenticator()->isLoggedIn())
 	        return $this->redirectToRoute('index');
 
-		return $this->renderTemplate('announcements/announcements.html.twig', [
+		return $this->renderTemplate('announcements/index.html.twig', [
             'success' => $this->getSession()->flash('deleteSuccess'),
             'pageTitle' => 'All announcements'
         ]);
@@ -48,7 +49,7 @@ class Announcement extends AppController
 
 			if (empty($errorList))
 			{
-			    $announcement = new \App\Models\Announcement(0, $title, $author, $message, $date);
+			    $announcement = new Announcement(0, $title, $author, $message, $date);
 				if ($this->announcementStorage->save($announcement))
 				{
 					$this->getSession()->set('announcementSuccess', 'Announcement added');
@@ -64,11 +65,11 @@ class Announcement extends AppController
             'errors' => $errorList,
             'success' => $this->getSession()->flash('announcementSuccess'),
             'message' => $this->post->get('message'),
-            'pageTitle' => 'Post new notice'
+            'pageTitle' => 'Add new announcement'
         ]);
 	}
 
-	public function view($id = 0) :Response
+	public function view($id = '') :Response
 	{
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
@@ -76,7 +77,7 @@ class Announcement extends AppController
 		$announcement = $this->getAnnouncement((int)$id ?? 0);
 
 		if ($announcement->isSaved())
-			return $this->renderTemplate('announcements/announcement.html.twig', [
+			return $this->renderTemplate('announcements/view.html.twig', [
                 'id' => $announcement->getIdentifier(),
                 'title' => $announcement->getTitle(),
                 'message' => $announcement->getMessage(),
@@ -85,7 +86,7 @@ class Announcement extends AppController
 		return $this->redirectToRoute('announcements');
 	}
 
-	public function edit($id = 0) :Response
+	public function edit($id = '') :Response
 	{
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
@@ -136,7 +137,7 @@ class Announcement extends AppController
         return $this->redirectToRoute('announcements');
 	}
 
-	public function delete($id = 0) :Response
+	public function delete($id = '') :Response
 	{
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
@@ -157,7 +158,7 @@ class Announcement extends AppController
 		return $this->redirectToRoute('announcements');
 	}
 
-	private function getAnnouncement(int $id = 0) :\App\Models\Announcement
+	private function getAnnouncement(int $id = 0) :Announcement
 	{
 		return $this->announcementStorage->getById($id);
 	}

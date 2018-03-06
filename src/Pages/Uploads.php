@@ -10,7 +10,7 @@ use App\Models\TimeTable;
 use App\Controller\AppController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Upload extends AppController
+class Uploads extends AppController
 {
     private $post;
     private $webPath;
@@ -83,7 +83,7 @@ class Upload extends AppController
             }
         }
 
-        return $this->renderTemplate('upload/notes.html.twig', [
+        return $this->renderTemplate('uploads/notes.html.twig', [
             'errors' => $errorList,
             'courses' => $this->storageManager->getCourseStorage()->getAll(),
             'success' => $this->getSession()->flash('successNote'),
@@ -143,7 +143,7 @@ class Upload extends AppController
             }
         }
 
-        return $this->renderTemplate('upload/timetables.html.twig', [
+        return $this->renderTemplate('uploads/timetables.html.twig', [
             'errors' => $errorList,
             'success' => $this->getSession()->flash('successTimeTable'),
             'pageTitle' => 'Upload timetable',

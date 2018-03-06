@@ -1,7 +1,7 @@
 composer.lock
 data.ini
 .env.dist
-downloads/
+/public/downloads/
 symfony.lock
 ###> symfony/framework-bundle ###
 .env
