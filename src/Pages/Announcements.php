@@ -3,10 +3,11 @@
 namespace App\Pages;
 
 
+use App\Models\Announcement;
 use App\Controller\AppController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Announcement extends AppController
+class Announcements extends AppController
 {
     private $post;
     private $announcementStorage;
@@ -48,7 +49,7 @@ class Announcement extends AppController
 
 			if (empty($errorList))
 			{
-			    $announcement = new \App\Models\Announcement(0, $title, $author, $message, $date);
+			    $announcement = new Announcement(0, $title, $author, $message, $date);
 				if ($this->announcementStorage->save($announcement))
 				{
 					$this->getSession()->set('announcementSuccess', 'Announcement added');
@@ -157,7 +158,7 @@ class Announcement extends AppController
 		return $this->redirectToRoute('announcements');
 	}
 
-	private function getAnnouncement(int $id = 0) :\App\Models\Announcement
+	private function getAnnouncement(int $id = 0) :Announcement
 	{
 		return $this->announcementStorage->getById($id);
 	}

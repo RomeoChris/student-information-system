@@ -36,27 +36,27 @@ apiNotes:
 
 announcements:
     path: /announcements/
-    controller: App\Pages\Announcement:index
+    controller: App\Pages\Announcements:index
 
 viewAnnouncement:
     path: /announcements/view/{id}/
-    controller: App\Pages\Announcement:view
+    controller: App\Pages\Announcements:view
     requirements:
         id: '\d+'
 
 newAnnouncement:
     path: /announcements/new/
-    controller: App\Pages\Announcement:new
+    controller: App\Pages\Announcements:new
 
 editAnnouncement:
     path: /announcements/edit/{id}/
-    controller: App\Pages\Announcement:edit
+    controller: App\Pages\Announcements:edit
     requirements:
         id: '\d+'
 
 deleteAnnouncement:
     path: /announcements/delete/{id}/
-    controller: App\Pages\Announcement:delete
+    controller: App\Pages\Announcements:delete
     requirements:
         id: '\d+'
 
