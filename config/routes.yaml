@@ -83,3 +83,7 @@ editComplaint:
 deleteComplaint:
     path: /complaints/delete/{id}/
     controller: App\Pages\Complaints:delete
+
+apiComplaints:
+    path: /api/complaints/
+    controller: App\Controller\ApiController:complaints
