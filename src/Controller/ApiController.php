@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Core\DataTable\DataTable;
 use App\Conversions\NoteConversion;
+use App\Conversions\CourseConversion;
 use App\Conversions\TimeTableConversion;
 use App\Conversions\ComplaintConversion;
 use App\Conversions\AnnouncementConversion;
@@ -48,6 +49,16 @@ class ApiController extends AppController
     {
         $dataTable = $this->dataTable();
         $conversion = new ComplaintConversion;
+        $dataTable->setTable($conversion->getTableName());
+        $dataTable->setColumns($conversion->getApiColumns());
+        $dataTable->setPrimaryKey($conversion->getIdField());
+        return new JsonResponse($dataTable->getData());
+    }
+
+    public function courses() :Response
+    {
+        $dataTable = $this->dataTable();
+        $conversion = new CourseConversion;
         $dataTable->setTable($conversion->getTableName());
         $dataTable->setColumns($conversion->getApiColumns());
         $dataTable->setPrimaryKey($conversion->getIdField());
