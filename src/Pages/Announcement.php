@@ -22,7 +22,7 @@ class Announcement extends AppController
 	    if (!$this->getAuthenticator()->isLoggedIn())
 	        return $this->redirectToRoute('index');
 
-		return $this->renderTemplate('announcements/announcements.html.twig', [
+		return $this->renderTemplate('announcements/index.html.twig', [
             'success' => $this->getSession()->flash('deleteSuccess'),
             'pageTitle' => 'All announcements'
         ]);
@@ -64,7 +64,7 @@ class Announcement extends AppController
             'errors' => $errorList,
             'success' => $this->getSession()->flash('announcementSuccess'),
             'message' => $this->post->get('message'),
-            'pageTitle' => 'Post new notice'
+            'pageTitle' => 'Add new announcement'
         ]);
 	}
 
@@ -76,7 +76,7 @@ class Announcement extends AppController
 		$announcement = $this->getAnnouncement((int)$id ?? 0);
 
 		if ($announcement->isSaved())
-			return $this->renderTemplate('announcements/announcement.html.twig', [
+			return $this->renderTemplate('announcements/view.html.twig', [
                 'id' => $announcement->getIdentifier(),
                 'title' => $announcement->getTitle(),
                 'message' => $announcement->getMessage(),
