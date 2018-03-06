@@ -13,15 +13,15 @@ class Announcement extends AppController
 
 	public function __construct()
 	{
-        if (!$this->getAuthenticator()->isLoggedIn())
-            $this->redirectToRoute('index');
-
 	    $this->post = $this->getPost();
 	    $this->announcementStorage = $this->getStorageManager()->getAnnouncementStorage();
 	}
 
 	public function index() :Response
 	{
+	    if (!$this->getAuthenticator()->isLoggedIn())
+	        return $this->redirectToRoute('index');
+
 		return $this->renderTemplate('announcements/announcements.html.twig', [
             'success' => $this->getSession()->flash('deleteSuccess'),
             'pageTitle' => 'All announcements'
@@ -30,6 +30,9 @@ class Announcement extends AppController
 
 	public function new() :Response
 	{
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
 	    $this->getAuthenticator()->requireLecturer();
 		$errorList = [];
 
@@ -67,6 +70,9 @@ class Announcement extends AppController
 
 	public function view($id = 0) :Response
 	{
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
 		$announcement = $this->getAnnouncement((int)$id ?? 0);
 
 		if ($announcement->isSaved())
@@ -81,6 +87,9 @@ class Announcement extends AppController
 
 	public function edit($id = 0) :Response
 	{
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
         $this->getAuthenticator()->requireLecturer();
 
 		$errorList = [];
@@ -129,7 +138,11 @@ class Announcement extends AppController
 
 	public function delete($id = 0) :Response
 	{
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
 		$this->getAuthenticator()->requireLecturer();
+		
 		$announcement = $this->getAnnouncement((int)$id ?? 0);
 
 		if ($announcement->isSaved())
