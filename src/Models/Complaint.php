@@ -74,7 +74,7 @@ class Complaint extends Model
         return new self(
             $data->getInt('id'),
             $data->getString('title'),
-            $data->getString('author'),
+            $data->getString('creator'),
             $data->getString('message'),
             $data->getString('date_added'),
             $data->getString('date_updated')
