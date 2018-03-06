@@ -230,6 +230,12 @@
             "ajax": "{{ path('apiComplaints') }}"
         });
 
+        $('#courses_datatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ path('apiCourses') }}"
+        });
+
     });
 </script>
 {% endblock %}
