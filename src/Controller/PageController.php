@@ -44,14 +44,4 @@ class PageController extends AppController
      * @Route("/admins/", name="admins")
      */
     public function admins() {}
-
-    /**
-     * @Route("/courses/", name="courses")
-     */
-    public function courses() {}
-
-    /**
-     * @Route("/courses/new/", name="newCourse")
-     */
-    public function newCourse() {}
 }

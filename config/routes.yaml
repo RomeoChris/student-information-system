@@ -77,3 +77,27 @@ deleteComplaint:
 apiComplaints:
     path: /api/complaints/
     controller: App\Controller\ApiController:complaints
+
+courses:
+    path: /courses/
+    controller: App\Pages\Courses:index
+
+newCourse:
+    path: /courses/new/
+    controller: App\Pages\Courses:new
+
+viewCourse:
+    path: /courses/view/{id}/
+    controller: App\Pages\Courses:view
+
+editCourse:
+    path: /courses/edit/{id}/
+    controller: App\Pages\Courses:edit
+
+deleteCourse:
+    path: /courses/delete/{id}/
+    controller: App\Pages\Courses:delete
+
+apiCourses:
+    path: /api/courses/
+    controller: App\Controller\ApiController:courses

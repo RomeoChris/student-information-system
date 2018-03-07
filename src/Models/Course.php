@@ -9,6 +9,7 @@ class Course extends Model
 {
     protected $id;
     private $years;
+    private $author;
     private $courseName;
     private $department;
     private $dateCreated;
@@ -17,6 +18,7 @@ class Course extends Model
     public function __construct(
         int $id = 0,
         int $years = 0,
+        string $author = '',
         string $courseName = '',
         string $department = '',
         string $dateCreated = '',
@@ -25,6 +27,7 @@ class Course extends Model
     {
         $this->id = $id;
         $this->years = $years;
+        $this->author = $author;
         $this->courseName = $courseName;
         $this->department = $department;
         $this->dateCreated = $dateCreated;
@@ -33,6 +36,7 @@ class Course extends Model
 
     public static function empty() :self { return new self; }
     public function getYears() :int { return $this->years; }
+    public function getAuthor() :string { return $this->author; }
     public function getCourseName() :string { return $this->courseName; }
     public function getDepartment() :string { return $this->department; }
     public function getDateCreated() :string { return $this->dateCreated; }
@@ -41,6 +45,11 @@ class Course extends Model
     public function setYears(int $years = 0) :void
     {
         $this->years = $years;
+    }
+
+    public function setAuthor(string $author = '') :void
+    {
+        $this->author = $author;
     }
 
     public function setCourseName(string $courseName = '') :void
@@ -62,8 +71,9 @@ class Course extends Model
     {
         return [
             'name' => $this->courseName,
-            'department' => $this->department,
             'years' => $this->years,
+            'author' => $this->author,
+            'department' => $this->department,
             'date_created' => $this->dateCreated,
             'date_modified' => $this->dateModified
         ];
@@ -74,6 +84,7 @@ class Course extends Model
         return new self(
             $data->getInt('id'),
             $data->getInt('years'),
+            $data->getString('author'),
             $data->getString('name'),
             $data->getString('department'),
             $data->getString('date_created'),
