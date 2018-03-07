@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <br />
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="card-box">
+                        <h4 class="header-title m-t-0 text-center">Update Course</h4>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <div class="card-box">
+                        <form role="form" method="post" action="{{ path('editCourse', {'id':id}) }}">
+
+                            {% if success %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">{{ success }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+
+                            {% if errors %}
+                                {% for error in errors %}
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ error }}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <div class="form-group">
+                                <label for="coursename">Course name</label>
+                                <input value="{{ courseName }}" name="courseName" type="text" class="form-control" id="coursename" placeholder="Enter course name">
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <input value="{{ department }}" name="department" type="text" class="form-control" id="department" placeholder="Enter course department">
+                            </div>
+                            <div class="form-group">
+                                <label for="years">Years</label>
+                                <input value="{{ years }}" name="years" type="number" class="form-control" id="years">
+                            </div>
+                            <button type="submit" class="btn btn-info waves-effect waves-light">Update</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
