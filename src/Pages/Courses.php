@@ -71,6 +71,25 @@ class Courses extends AppController
         ]);
     }
 
+    public function view($id = '') :Response
+    {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        $course = $this->getCourse((int)$id ?? 0);
+
+        if ($course->isSaved())
+            return $this->renderTemplate('courses/view.html.twig', [
+                'id' => $course->getIdentifier(),
+                'years' => $course->getYears(),
+                'author' => $course->getAuthor(),
+                'pageTitle' => $course->getCourseName(),
+                'courseName' =>$course->getCourseName(),
+                'department' => $course->getDepartment()
+            ]);
+        return $this->redirectToRoute('courses');
+    }
+
     public function edit($id = '') :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
