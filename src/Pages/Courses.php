@@ -70,4 +70,30 @@ class Courses extends AppController
             'department' => $department
         ]);
     }
+
+    public function delete($id = '') :Response
+    {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        $this->getAuthenticator()->requireAdmin();
+
+        $course = $this->getCourse((int)$id ?? 0);
+
+        if ($course->isSaved())
+        {
+            if ($this->courseStorage->delete($course))
+            {
+                $this->getSession()->set('deleteSuccess', 'Course deleted successfully');
+                return $this->redirectToRoute('courses');
+            }
+            return $this->redirectToRoute('courses');
+        }
+        return $this->redirectToRoute('courses');
+    }
+
+    private function getCourse(int $id = 0) :Course
+    {
+        return $this->courseStorage->getById($id);
+    }
 }
