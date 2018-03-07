@@ -71,6 +71,65 @@ class Courses extends AppController
         ]);
     }
 
+    public function edit($id = '') :Response
+    {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        $this->getAuthenticator()->requireAdmin();
+
+        $errorList = [];
+
+        $course = $this->getCourse((int)$id ?? 0);
+
+        $years = $course->getYears();
+        $department = $course->getDepartment();
+        $courseName = $course->getCourseName();
+
+        if ($course->isSaved())
+        {
+            if ($this->getRequest()->isMethod('post'))
+            {
+                $date = date('Y-m-d h:i:sa');
+                $years = $this->post->get('years');
+                $author = $this->getProfile()->getUsername();
+                $courseName = $this->post->get('courseName');
+                $department = $this->post->get('department');
+
+                if (empty(($years || $courseName || $department)))
+                    $errorList[] = 'All fields are required';
+
+                if (empty($errorList))
+                {
+                    $course->setYears($years);
+                    $course->setAuthor($author);
+                    $course->setCourseName($courseName);
+                    $course->setDepartment($department);
+                    $course->setDateModified($date);
+
+                    if ($this->courseStorage->save($course))
+                    {
+                        $this->getSession()->set('editCourseSuccess', 'Course has been successfully updated');
+                        return $this->redirectToRoute('editCourse', ['id' => $course->getIdentifier()]);
+                    }
+                    else
+                        $errorList[] = 'Internal server error. Please try again later';
+                }
+            }
+
+            return $this->renderTemplate('courses/edit.html.twig', [
+                'id' => $course->getIdentifier(),
+                'years' => $years,
+                'errors' => $errorList,
+                'success' => $this->getSession()->flash('editCourseSuccess'),
+                'pageTitle' => 'Edit course',
+                'courseName' => $courseName,
+                'department' => $department
+            ]);
+        }
+        return $this->redirectToRoute('courses');
+    }
+
     public function delete($id = '') :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
