@@ -50,19 +50,21 @@ class Authenticator extends Controller
     public function requireHeadAdmin() :void
     {
         if ($this->getProfile()->getRole() !=  'head')
-            $this->getAuthorityMessage();
+            die($this->getAuthorityMessage());
     }
 
     public function requireAdmin() :void
     {
-        if ($this->getProfile()->getRole() !=  ('admin' || 'head'))
-            $this->getAuthorityMessage();
+        if ($this->getRole() !=  'admin' || $this->getRole() !=  'head')
+            die($this->getAuthorityMessage());
     }
 
     public function requireLecturer() :void
     {
-        if ($this->getProfile()->getRole() !=  ('lecturer' || 'admin' || 'head'))
-            $this->getAuthorityMessage();
+        if ($this->getRole() !=  'lecturer'
+            || $this->getRole() !=  'admin'
+            || $this->getRole() !=  'head')
+            die($this->getAuthorityMessage());
     }
 
     public function isHeadAdmin() :bool
@@ -80,8 +82,13 @@ class Authenticator extends Controller
         return $this->getProfile()->getRole() == ('lecturer' || 'admin' || 'head');
     }
 
-    private function getAuthorityMessage() :void
+    private function getRole() :string
     {
-        die('<h2 style="text-align: center; color: red">Not Authorized</h2>');
+        return $this->getProfile()->getRole();
+    }
+
+    private function getAuthorityMessage() :string
+    {
+        return '<h2 style="text-align: center; color: red">Not Authorized</h2>';
     }
 }
