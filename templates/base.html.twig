@@ -81,10 +81,10 @@
                     </li>
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-user"></i>
-                            <span> Students </span> <span class="menu-arrow"></span> </a>
+                            <span> Users </span> <span class="menu-arrow"></span> </a>
                         <ul class="list-unstyled">
-                            <li><a href="{{ path('newStudent') }}">Add new student</a></li>
-                            <li><a href="{{ path('students') }}">Students</a></li>
+                            <li><a href="{{ path('users') }}">Users</a></li>
+                            <li><a href="{{ path('newUser') }}">New user</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">
@@ -118,14 +118,6 @@
                             <li><a href="{{ path('newComplaint') }}">New Complaint</a></li>
                             <li><a href="{{ path('complaints') }}">Complaints</a></li>
                         </ul>
-                    </li>
-                    <li>
-                        <a href="{{ path('lecturers') }}" class="waves-effect waves-primary">
-                            <i class="ti-user"></i><span> Lecturers </span></a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admins') }}" class="waves-effect waves-primary">
-                            <i class="ti-user"></i><span> Admins </span></a>
                     </li>
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-layers-alt"></i>
@@ -234,6 +226,12 @@
             "processing": true,
             "serverSide": true,
             "ajax": "{{ path('apiCourses') }}"
+        });
+
+        $('#users_datatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ path('apiUsers') }}"
         });
 
     });
