@@ -18,7 +18,6 @@ class Profile extends Model
     private $firstName;
     private $lastLogin;
     private $dateJoined;
-    private $middleName;
     private $nationality;
     private $passwordHash;
     private $loginAttempts;
@@ -28,7 +27,6 @@ class Profile extends Model
         string $username = '',
         string $email = '',
         string $firstName = '',
-        string $middleName = '',
         string $lastName = '',
         string $passwordHash = '',
         string $gender = '',
@@ -45,7 +43,6 @@ class Profile extends Model
         $this->username = $username;
         $this->email = $email;
         $this->firstName = $firstName;
-        $this->middleName = $middleName;
         $this->lastName = $lastName;
         $this->passwordHash = $passwordHash;
         $this->gender = $gender;
@@ -62,7 +59,6 @@ class Profile extends Model
     public function getUsername() :string { return $this->username; }
     public function getEmail() :string { return $this->email; }
     public function getFirstName() :string { return $this->firstName; }
-    public function getMiddleName() :string { return $this->middleName; }
     public function getLastName() :string { return $this->lastName; }
     public function getPasswordHash() :string { return $this->passwordHash; }
     public function getGender() :string { return $this->gender; }
@@ -82,11 +78,6 @@ class Profile extends Model
     public function setFirstName(string $firstName = '') :void
     {
         $this->firstName = $firstName;
-    }
-
-    public function setMiddleName(string $middleName = '') :void
-    {
-        $this->middleName = $middleName;
     }
 
     public function setLastName(string $lastName = '') :void
@@ -142,7 +133,6 @@ class Profile extends Model
             'gender' => $this->gender,
             'nationality' => $this->nationality,
             'first_name' => $this->firstName,
-            'middle_name' => $this->middleName,
             'last_name' => $this->lastName,
             'password' => $this->passwordHash,
             'joined' => $this->dateJoined,
@@ -161,7 +151,6 @@ class Profile extends Model
             $data->getString('username'),
             $data->getString('email'),
             $data->getString('first_name'),
-            $data->getString('middle_name'),
             $data->getString('last_name'),
             $data->getString('password'),
             $data->getString('gender'),
