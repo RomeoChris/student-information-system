@@ -27,6 +27,8 @@ class Users extends AppController
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
 
+        $this->getAuthenticator()->requireLecturer();
+
         return $this->renderTemplate('users/index.html.twig', [
             'pageTitle' => 'All users'
         ]);
@@ -34,6 +36,11 @@ class Users extends AppController
 
     public function new()
     {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        $this->getAuthenticator()->requireAdmin();
+
         $role = $this->getPost()->get('role');
         $date = date('Y-m-d h:i:sa');
         $email = $this->getPost()->get('email');
@@ -69,6 +76,9 @@ class Users extends AppController
                         $errorList[] = 'All fields with * are required';
                         break;
                     }
+
+            if ($role == 'admin' && !$this->getAuthenticator()->isHeadAdmin())
+                $role = 'student';
 
             if (count($errorList) === 0)
             {
