@@ -108,7 +108,7 @@ users:
 
 newUser:
     path: /users/new/
-    controller: App\pages\Users:new
+    controller: App\Pages\Users:new
 
 apiUsers:
     path: /api/users/
