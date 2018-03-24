@@ -27,9 +27,9 @@ class Dashboard extends AppController
             'pageTitle' => 'Dashboard',
             'complaints' => $this->getComplaints(),
             'announcements' => $this->getAnnouncements(),
-            'numberOfAdmins' => $this->getAdmins(),
-            'numberOfStudents' => $this->getStudents(),
-            'numberOfLecturers' => $this->getLecturers()
+            'numberOfAdmins' => $this->getUsers('admins'),
+            'numberOfStudents' => $this->getUsers('students'),
+            'numberOfLecturers' => $this->getUsers('lecturers')
         ]);
     }
 
@@ -45,18 +45,8 @@ class Dashboard extends AppController
         return $this->database->fetchAll($query);
     }
 
-    private function getLecturers() :int
+    private function getUsers(string $role) :int
     {
-        return $this->database->rowCount('SELECT * FROM lecturers');
-    }
-
-    private function getAdmins() :int
-    {
-        return $this->database->rowCount('SELECT * FROM admins');
-    }
-
-    private function getStudents() :int
-    {
-        return $this->database->rowCount('SELECT * FROM students');
+        return $this->database->rowCount('SELECT * FROM profiles WHERE role = ?', [$role]);
     }
 }
