@@ -26,16 +26,6 @@ class PageController extends AppController
     public function profile() {}
 
     /**
-     * @Route("/students/", name="students")
-     */
-    public function students() {}
-
-    /**
-     * @Route("/students/new/", name="newStudent")
-     */
-    public function newStudent() {}
-
-    /**
      * @Route("/lecturers/", name="lecturers")
      */
     public function lecturers() {}

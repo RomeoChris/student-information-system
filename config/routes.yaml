@@ -101,3 +101,11 @@ deleteCourse:
 apiCourses:
     path: /api/courses/
     controller: App\Controller\ApiController:courses
+
+students:
+    path: /students/
+    controller: App\Pages\Students:index
+
+newStudent:
+    path: /students/new/
+    controller: App\Pages\Students:new
