@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Conversions\ProfileConversion;
 use App\Core\DataTable\DataTable;
 use App\Conversions\NoteConversion;
 use App\Conversions\CourseConversion;
@@ -59,6 +60,16 @@ class ApiController extends AppController
     {
         $dataTable = $this->dataTable();
         $conversion = new CourseConversion;
+        $dataTable->setTable($conversion->getTableName());
+        $dataTable->setColumns($conversion->getApiColumns());
+        $dataTable->setPrimaryKey($conversion->getIdField());
+        return new JsonResponse($dataTable->getData());
+    }
+
+    public function users() :Response
+    {
+        $dataTable = $this->dataTable();
+        $conversion = new ProfileConversion;
         $dataTable->setTable($conversion->getTableName());
         $dataTable->setColumns($conversion->getApiColumns());
         $dataTable->setPrimaryKey($conversion->getIdField());
