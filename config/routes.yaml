@@ -102,10 +102,14 @@ apiCourses:
     path: /api/courses/
     controller: App\Controller\ApiController:courses
 
-students:
-    path: /students/
-    controller: App\Pages\Students:index
+users:
+    path: /users/
+    controller: App\Pages\Users:index
 
-newStudent:
-    path: /students/new/
-    controller: App\Pages\Students:new
+newUser:
+    path: /users/new/
+    controller: App\pages\Users:new
+
+apiUsers:
+    path: /api/users/
+    controller: App\Controller\ApiController:users
