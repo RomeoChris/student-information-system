@@ -101,7 +101,7 @@
                             <div class="col-7">
                                 <select class="form-control" name="role" id="role">
                                     <option>student</option>
-                                    <option>admin</option>
+                                    {% if headAdmin %}<option>admin</option>{% endif %}
                                     <option>lecturer</option>
                                 </select>
                             </div>
