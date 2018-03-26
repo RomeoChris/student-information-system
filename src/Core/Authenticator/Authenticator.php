@@ -49,37 +49,37 @@ class Authenticator extends Controller
 
     public function requireHeadAdmin() :void
     {
-        if ($this->getProfile()->getRole() !=  'head')
+        if (!$this->isHeadAdmin())
             die($this->getAuthorityMessage());
     }
 
     public function requireAdmin() :void
     {
-        if ($this->getRole() !=  'admin' || $this->getRole() !=  'head')
+        if (!$this->isAdmin())
             die($this->getAuthorityMessage());
     }
 
     public function requireLecturer() :void
     {
-        if ($this->getRole() !=  'lecturer'
-            || $this->getRole() !=  'admin'
-            || $this->getRole() !=  'head')
+        if (!$this->isLecturer())
             die($this->getAuthorityMessage());
     }
 
     public function isHeadAdmin() :bool
     {
-        return $this->getProfile()->getRole() == 'head';
+        return $this->getRole() == 'head';
     }
 
     public function isAdmin() :bool
     {
-        return $this->getProfile()->getRole() ==  ('admin' || 'head');
+        return $this->getRole() ==  'admin' || $this->getRole() == 'head';
     }
 
     public function isLecturer() :bool
     {
-        return $this->getProfile()->getRole() == ('lecturer' || 'admin' || 'head');
+        return $this->getRole() == 'head'
+            || $this->getRole() == 'admin'
+            || $this->getRole() == 'lecturer';
     }
 
     private function getRole() :string
