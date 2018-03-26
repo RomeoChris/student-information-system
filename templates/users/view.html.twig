@@ -61,6 +61,7 @@
                                     <input type="text" value="{{ gender }}" name="gender" class="form-control" id="gender">
                                 </div>
                             </div>
+
                             {% if not lecturer %}
                                 <div class="form-group row">
                                     <label for="course" class="col-4 col-form-label">Course</label>
@@ -69,12 +70,22 @@
                                     </div>
                                 </div>
                             {% endif %}
+
+                            {% if admin %}
                             <div class="form-group row">
-                                <label for="course" class="col-4 col-form-label">Role</label>
+                                <label for="role" class="col-4 col-form-label">Role</label>
                                 <div class="col-7">
-                                    <input type="text" value="{{ role }}" name="course" {{ disabled }} class="form-control" id="course">
+                                    <select class="form-control" name="role" id="role">
+                                        <option>{{ role }}</option>
+                                        <option>lecturer</option>
+                                        <option>student</option>
+                                        {% if headAdmin %}<option>admin</option>{% endif %}
+                                        {% if headAdmin %}<option>head</option>{% endif %}
+                                    </select>
                                 </div>
                             </div>
+                            {% endif %}
+
                             <div class="form-group row">
                                 <label for="phone_number" class="col-4 col-form-label">Phone Number</label>
                                 <div class="col-7">
