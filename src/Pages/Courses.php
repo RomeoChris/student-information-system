@@ -34,6 +34,8 @@ class Courses extends AppController
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
 
+        $this->getAuthenticator()->requireAdmin();
+
         $errorList = [];
 
         $date = date('Y-m-d h:i:sa');

@@ -33,6 +33,8 @@ class Uploads extends AppController
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
 
+        $this->getAuthenticator()->requireLecturer();
+
         $errorList = [];
 
         if ($this->getRequest()->isMethod('post'))
@@ -96,6 +98,8 @@ class Uploads extends AppController
     {
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
+
+        $this->getAuthenticator()->requireLecturer();
 
         $errorList = [];
 
