@@ -18,7 +18,6 @@ class Profile extends Model
     private $firstName;
     private $lastLogin;
     private $dateJoined;
-    private $nationality;
     private $passwordHash;
     private $loginAttempts;
 
@@ -30,7 +29,6 @@ class Profile extends Model
         string $lastName = '',
         string $passwordHash = '',
         string $gender = '',
-        string $nationality = '',
         string $number = '',
         string $course = '',
         string $role = '',
@@ -46,7 +44,6 @@ class Profile extends Model
         $this->lastName = $lastName;
         $this->passwordHash = $passwordHash;
         $this->gender = $gender;
-        $this->nationality = $nationality;
         $this->number = $number;
         $this->course = $course;
         $this->role = $role;
@@ -62,7 +59,6 @@ class Profile extends Model
     public function getLastName() :string { return $this->lastName; }
     public function getPasswordHash() :string { return $this->passwordHash; }
     public function getGender() :string { return $this->gender; }
-    public function getNationality() :string { return $this->nationality; }
     public function getPhoneNumber() :string { return $this->number; }
     public function getRole() :string { return $this->role; }
     public function getDateJoined() :string { return $this->dateJoined; }
@@ -93,11 +89,6 @@ class Profile extends Model
     public function setGender(string $gender = '') :void
     {
         $this->gender = $gender;
-    }
-
-    public function setNationality(string $nationality = '') :void
-    {
-        $this->nationality = $nationality;
     }
 
     public function setPhoneNumber(string $phoneNumber = '') :void
@@ -131,7 +122,6 @@ class Profile extends Model
             'username' => $this->username,
             'email' => $this->email,
             'gender' => $this->gender,
-            'nationality' => $this->nationality,
             'first_name' => $this->firstName,
             'last_name' => $this->lastName,
             'password' => $this->passwordHash,
@@ -154,7 +144,6 @@ class Profile extends Model
             $data->getString('last_name'),
             $data->getString('password'),
             $data->getString('gender'),
-            $data->getString('nationality'),
             $data->getString('number'),
             $data->getString('course'),
             $data->getString('role'),
