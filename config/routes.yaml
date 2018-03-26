@@ -113,3 +113,7 @@ newUser:
 apiUsers:
     path: /api/users/
     controller: App\Controller\ApiController:users
+
+updateUser:
+    path: /users/profile/{id}/
+    controller: App\Pages\Users:profile
