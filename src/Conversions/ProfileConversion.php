@@ -22,7 +22,7 @@ class ProfileConversion implements IConversion
                 'dt' => 6,
                 'formatter' => function($id)
                 {
-                    return "<a class='btn btn-info' href='/users/view/$id/'>View Profile</a>";
+                    return "<a class='btn btn-info' href='/users/profile/$id/'>View Profile</a>";
                 }
             ]
         ];
