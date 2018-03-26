@@ -6,16 +6,19 @@
             <a href="{{ path('index') }}" class="logo-lg"><i class="mdi mdi-radar"></i> <span>{{ brandName }}</span> </a>
         </div>
         <form class="form-horizontal m-t-20" action="{{ path('index') }}" method="POST">
-            {% if errorMessage is defined %}
-            <div class="form-group row">
-                <div class="col-12">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ errorMessage }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+
+            {% if errors %}
+                {% for error in errors %}
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ error }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                {% endfor %}
             {% endif %}
 
             <div class="form-group row">
