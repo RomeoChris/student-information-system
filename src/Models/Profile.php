@@ -66,6 +66,11 @@ class Profile extends Model
     public function getLoginAttempts() :int { return $this->loginAttempts; }
     public function getCourse() :string { return $this->course; }
 
+    public function setUsername(string $username = '') :void
+    {
+        $this->username = $username;
+    }
+
     public function setEmail(string $email = '') :void
     {
         $this->email = $email;
