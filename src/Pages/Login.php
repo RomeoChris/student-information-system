@@ -30,8 +30,8 @@ class Login extends AppController
         {
             if ($this->token->validate('loginToken', $this->post->get('token')))
             {
-                $username = $this->post->get('username');
-                $password = $this->post->get('password');
+                $username = $this->post->get('username', '');
+                $password = $this->post->get('password', '');
 
                 if (empty($username))
                     $errorList[] = 'Please enter your login';
