@@ -45,7 +45,7 @@
                         <div class="dropdown-item noti-title">
                             <h5 class="text-overflow"><small>{{ username }}</small> </h5>
                         </div>
-                        <a href="{{ path('profile') }}" class="dropdown-item notify-item">
+                        <a href="{{ path('updateUser', {'id':id}) }}" class="dropdown-item notify-item">
                             <i class="mdi mdi-account-star-variant"></i> <span>Profile</span>
                         </a>
                         <a href="{{ path('logout') }}" class="dropdown-item notify-item">
