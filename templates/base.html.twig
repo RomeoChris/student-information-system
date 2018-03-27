@@ -39,13 +39,13 @@
                 <li class="list-inline-item dropdown notification-list">
                     <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ asset('static/images/avatar-1.jpg') }}" alt="{{ username }}" class="rounded-circle">
+                        <img src="{{ asset('static/images/avatar-1.jpg') }}" alt="{{ profileUsername }}" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
                         <div class="dropdown-item noti-title">
-                            <h5 class="text-overflow"><small>{{ username }}</small> </h5>
+                            <h5 class="text-overflow"><small>{{ profileUsername }}</small> </h5>
                         </div>
-                        <a href="{{ path('updateUser', {'id':id}) }}" class="dropdown-item notify-item">
+                        <a href="{{ path('updateUser', {'id':profileId}) }}" class="dropdown-item notify-item">
                             <i class="mdi mdi-account-star-variant"></i> <span>Profile</span>
                         </a>
                         <a href="{{ path('logout') }}" class="dropdown-item notify-item">
@@ -74,7 +74,7 @@
         <div class="sidebar-inner slimscrollleft">
             <div id="sidebar-menu">
                 <ul>
-                    <li class="menu-title">{{ role }} | {{ username }}</li>
+                    <li class="menu-title">{{ role }} | {{ profileUsername }}</li>
                     <li>
                         <a href="{{ path('dashboard') }}" class="waves-effect waves-primary">
                             <i class="ti-home"></i><span> Dashboard </span></a>
