@@ -183,7 +183,7 @@ class Users extends AppController
             if (!empty($password) && $this->getAuthenticator()->isAdmin())
                 $profile->setPassword($password);
 
-            if (!empty($password) || !empty($oldPassword) && !$this->getAuthenticator()->isAdmin())
+            if ((!empty($password) || !empty($oldPassword)) && !$this->getAuthenticator()->isAdmin())
             {
                 if (!password_verify($oldPassword, $profile->getPasswordHash()))
                     $errorList[] = 'Wrong old password';
