@@ -218,6 +218,7 @@ class Users extends AppController
             'errors' => $errorList,
             'gender' => $profile->getGender(),
             'course' => $profile->getCourse(),
+            'courses' => $this->getCourses(),
             'success' => $this->session->flash('updateUserSuccess'),
             'disabled' => $disabled,
             'username' => $profile->getUsername(),

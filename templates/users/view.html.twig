@@ -62,14 +62,20 @@
                                 </div>
                             </div>
 
-                            {% if not lecturer %}
-                                <div class="form-group row">
-                                    <label for="course" class="col-4 col-form-label">Course</label>
-                                    <div class="col-7">
-                                        <input type="text" value="{{ course }}" name="course" {{ disabled }} class="form-control" id="course">
-                                    </div>
+                            <div class="form-group row">
+                                <label for="course" class="col-4 col-form-label">Course</label>
+                                <div class="col-7">
+                                    <select class="form-control" name="course" {{ disabled }} id="course">
+                                        <option>{{ course }}</option>
+                                        {% if courses %}
+                                            {% for course in courses %}
+                                                <option>{{ course }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                        <option></option>
+                                    </select>
                                 </div>
-                            {% endif %}
+                            </div>
 
                             {% if admin %}
                             <div class="form-group row">
