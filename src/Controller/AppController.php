@@ -116,7 +116,6 @@ abstract class AppController extends AbstractController
     private function commonParameters() :array
     {
         return [
-            'role' => $this->getProfile()->getRole(),
             'admin' => $this->getAuthenticator()->isAdmin(),
             'student' => $this->getAuthenticator()->isLoggedIn(),
             'footNote' => 'SIS 2017',
@@ -125,6 +124,7 @@ abstract class AppController extends AbstractController
             'profileId' => $this->getProfile()->getIdentifier(),
             'brandName' => 'SIS',
             'brandName2' => 'SIS',
+            'profileRole' => $this->getProfile()->getRole(),
             'profileUsername' => $this->getProfile()->getUsername(),
         ];
     }
