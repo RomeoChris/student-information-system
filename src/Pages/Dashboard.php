@@ -27,9 +27,9 @@ class Dashboard extends AppController
             'pageTitle' => 'Dashboard',
             'complaints' => $this->getComplaints(),
             'announcements' => $this->getAnnouncements(),
-            'numberOfAdmins' => $this->getUsers('admins'),
-            'numberOfStudents' => $this->getUsers('students'),
-            'numberOfLecturers' => $this->getUsers('lecturers')
+            'numberOfAdmins' => $this->getUsers('admin'),
+            'numberOfStudents' => $this->getUsers('student'),
+            'numberOfLecturers' => $this->getUsers('lecturer')
         ]);
     }
 
