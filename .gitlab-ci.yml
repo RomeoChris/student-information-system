@@ -1,26 +1,33 @@
 stages:
+  - build-site
   - install-dependecies
-  - update-site
+  - configure-site
+  - publish-site
+
+build-site:
+  stage: build-site
+  script:
+    - sudo sis-build-site.sh $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL
+  only:
+    - branches
 
 install-dependencies:
   stage: install-dependecies
   script:
-    - cd $PROJECT_DIR
-    - sudo composer update
-
+    - sudo sis-install-dependecies.sh $CI_COMMIT_REF_NAME
   only:
-    - master
+    - branches
 
-update-website:
-  stage: update-site
+configure-site:
+  stage: configure-site
   script:
-    - cd $PROJECT_DIR
-    - sudo git reset --hard && sudo git fetch -p --all
-    - sudo git checkout $VERSION && sudo git pull
-    - sudo cp /home/ubuntu/data.ini $PROJECT_DIR
-    - sudo chown -R www-data:www-data $PROJECT_DIR
-    - sudo chmod -R 775 $PROJECT_DIR
-    - sudo service apache2 restart
-
+    - sudo sis-configure-site.sh $CI_COMMIT_REF_NAME
   only:
-    - master
+    - branches
+
+publish-site:
+  stage: publish-site
+  script:
+    - sudo sis-publish-site.sh $CI_COMMIT_REF_NAME $SITE_NAME
+  only:
+    - branches
