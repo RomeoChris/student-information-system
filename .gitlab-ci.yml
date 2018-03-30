@@ -14,7 +14,7 @@ build-site:
 install-dependencies:
   stage: install-dependecies
   script:
-    - sudo sis-install-dependecies.sh $CI_COMMIT_REF_NAME
+    - sudo sis-install-dependencies.sh $CI_COMMIT_REF_NAME
   only:
     - branches
 
