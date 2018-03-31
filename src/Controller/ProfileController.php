@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Pages;
+namespace App\Controller;
 
 
-use App\Controller\DefaultController;
 use App\Entity\Profile;
 use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 
-class Users extends DefaultController
+class ProfileController extends DefaultController
 {
     public function index() :Response
     {
