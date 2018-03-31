@@ -104,11 +104,11 @@ apiCourses:
 
 users:
     path: /users/
-    controller: App\Pages\Users::index
+    controller: App\Controller\ProfileController::index
 
 newUser:
     path: /users/new/
-    controller: App\Pages\Users::new
+    controller: App\Controller\ProfileController::new
 
 apiUsers:
     path: /api/users/
@@ -116,4 +116,4 @@ apiUsers:
 
 updateUser:
     path: /users/profile/{id}/
-    controller: App\Pages\Users::profile
+    controller: App\Controller\ProfileController::profile
