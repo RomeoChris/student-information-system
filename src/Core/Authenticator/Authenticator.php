@@ -5,7 +5,7 @@ namespace App\Core\Authenticator;
 
 use App\Core\Session\AppSession;
 use App\Entity\Profile;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Authenticator
 {
@@ -13,7 +13,7 @@ class Authenticator
     private $identifier;
     private $repository;
 
-    public function __construct(ManagerRegistry $entityManager, AppSession $session)
+    public function __construct(EntityManagerInterface $entityManager, AppSession $session)
     {
         $this->session = $session;
         $this->identifier = $session->getInt('identifier');
