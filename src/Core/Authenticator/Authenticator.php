@@ -3,43 +3,43 @@
 namespace App\Core\Authenticator;
 
 
-use App\Models\Profile;
-use App\Storages\IStorage;
 use App\Core\Session\AppSession;
-use App\Core\Collection\AppCollection;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Entity\Profile;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class Authenticator extends Controller
+class Authenticator
 {
     private $session;
     private $identifier;
-    private $profileStorage;
+    private $repository;
 
-    public function __construct(IStorage $profileStorage, AppSession $session)
+    public function __construct(ManagerRegistry $entityManager, AppSession $session)
     {
         $this->session = $session;
         $this->identifier = $session->getInt('identifier');
-        $this->profileStorage = $profileStorage;
+        $this->repository = $entityManager->getRepository(Profile::class);
     }
 
     public function login(string $username = '', string $password = '') :bool
     {
-        $data = $this->profileStorage->getWhere('username = ?', [$username]);
-        $profile = $this->profileStorage->convertToModel(new AppCollection($data));
+        /* @var $profile Profile */
+        $profile = $this->repository->findOneBy(['username' => $username]);
 
-        if (password_verify($password, $profile->getPasswordHash()))
-        {
-            $this->session->set('role', $profile->getRole());
-            $this->session->set('username', $profile->getUsername());
-            $this->session->set('identifier', $profile->getIdentifier());
-            return true;
-        }
-        return false;
+        if (!password_verify($password, $profile->getPasswordHash()))
+            return false;
+
+        $this->session->set('role', $profile->getRole());
+        $this->session->set('username', $profile->getUsername());
+        $this->session->set('identifier', $profile->getId());
+
+        return true;
     }
 
     public function getProfile() :Profile
     {
-        return $this->profileStorage->getById($this->identifier);
+        /* @var $profile Profile */
+        $profile = $this->repository->find($this->identifier);
+        return $profile;
     }
 
     public function isLoggedIn() :bool
