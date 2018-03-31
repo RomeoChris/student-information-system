@@ -4,7 +4,7 @@ index:
 
 dashboard:
     path: /dashboard/
-    controller: App\Pages\Dashboard::index
+    controller: App\Controller\PageController::dashboard
 
 logout:
     path: /logout/
