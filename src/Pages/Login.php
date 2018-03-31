@@ -28,8 +28,7 @@ class Login extends AppController
                     $errorList[] = 'Please enter your password';
                 if (empty($errorList) && $this->getAuthenticator()->login($username, $password))
                     return $this->redirectToRoute('dashboard');
-                else
-                    $errorList[] = 'Invalid login or password';
+                $errorList[] = 'Invalid login or password';
             }
             else
                 $errorList[] = 'Failed to authorize login. Try reloading page';
