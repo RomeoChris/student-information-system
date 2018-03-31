@@ -8,15 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Dashboard extends AppController
 {
-    private $database;
-    private $storageManager;
-
-    public function __construct()
-    {
-        $this->database = $this->getDatabase();
-        $this->storageManager = $this->getStorageManager();
-    }
-
     public function index() :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
@@ -35,18 +26,19 @@ class Dashboard extends AppController
 
     private function getComplaints() :array
     {
-        $query = 'SELECT * FROM complaints ORDER BY id DESC LIMIT 3';
-        return $this->database->fetchAll($query);
+        $query = 'SELECT * FROM complaint ORDER BY id DESC LIMIT 3';
+        return $this->getDatabase()->fetchAll($query);
     }
 
     private function getAnnouncements() :array
     {
-        $query = 'SELECT * FROM announcements ORDER BY id DESC LIMIT 3';
-        return $this->database->fetchAll($query);
+        $query = 'SELECT * FROM announcement ORDER BY id DESC LIMIT 3';
+        return $this->getDatabase()->fetchAll($query);
     }
 
     private function getUsers(string $role) :int
     {
-        return $this->database->rowCount('SELECT * FROM profiles WHERE role = ?', [$role]);
+        $query = 'SELECT * FROM profile WHERE role = ?';
+        return $this->getDatabase()->rowCount($query, [$role]);
     }
 }
