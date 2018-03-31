@@ -159,22 +159,59 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    private function getComplaints() :array
+    public function timetablesDownload() :Response
     {
-        $query = 'SELECT * FROM complaint ORDER BY id DESC LIMIT 3';
-        return $this->getDatabase()->fetchAll($query);
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        return $this->renderTemplate('downloads/timetables.html.twig', [
+            'pageTitle' => 'Timetables downloads'
+        ]);
     }
 
-    private function getAnnouncements() :array
+    public function notesDownload() :Response
     {
-        $query = 'SELECT * FROM announcement ORDER BY id DESC LIMIT 3';
-        return $this->getDatabase()->fetchAll($query);
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        return $this->renderTemplate('downloads/notes.html.twig', [
+            'pageTitle' => 'Notes downloads'
+        ]);
     }
 
-    private function getUsers(string $role) :int
+    public function login() :Response
     {
-        $query = 'SELECT * FROM profile WHERE role = ?';
-        return $this->getDatabase()->rowCount($query, [$role]);
+        if ($this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('dashboard');
+
+        $errorList = [];
+        $token = $this->getPost()->get('token', '');
+        $username = $this->getPost()->get('username', '');
+        $password = $this->getPost()->get('password', '');
+
+        if ($this->getRequest()->isMethod('post'))
+        {
+            if ($this->getToken()->validate('loginToken', $token))
+            {
+                if (empty($username))
+                    $errorList[] = 'Please enter your login';
+                if (empty($password))
+                    $errorList[] = 'Please enter your password';
+                if (empty($errorList) && $this->getAuthenticator()->login($username, $password))
+                    return $this->redirectToRoute('dashboard');
+                $errorList[] = 'Invalid login or password';
+            }
+            else
+                $errorList[] = 'Failed to authorize login. Try reloading page';
+        }
+
+        return $this->render('login.html.twig', [
+            'token' => $this->getToken()->generate('loginToken'),
+            'errors' => $errorList,
+            'username' => $username,
+            'pageTitle' => 'Login | SIS',
+            'brandName' => 'SIS',
+        ]);
     }
 
     protected function getProfileRepository() :ObjectRepository
@@ -209,5 +246,23 @@ class DefaultController extends AbstractController
             'numberOfStudents' => $this->getUsers('student'),
             'numberOfLecturers' => $this->getUsers('lecturer'),
         ];
+    }
+
+    private function getComplaints() :array
+    {
+        $query = 'SELECT * FROM complaint ORDER BY id DESC LIMIT 3';
+        return $this->getDatabase()->fetchAll($query);
+    }
+
+    private function getAnnouncements() :array
+    {
+        $query = 'SELECT * FROM announcement ORDER BY id DESC LIMIT 3';
+        return $this->getDatabase()->fetchAll($query);
+    }
+
+    private function getUsers(string $role) :int
+    {
+        $query = 'SELECT * FROM profile WHERE role = ?';
+        return $this->getDatabase()->rowCount($query, [$role]);
     }
 }

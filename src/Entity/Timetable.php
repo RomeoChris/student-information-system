@@ -22,9 +22,9 @@ class Timetable
     private $author;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=100)
      */
-    private $description;
+    private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -58,14 +58,14 @@ class Timetable
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getTitle(): ?string
     {
-        return $this->description;
+        return $this->title;
     }
 
-    public function setDescription(string $description): self
+    public function setTitle(string $title): self
     {
-        $this->description = $description;
+        $this->title = $title;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 index:
     path: /
-    controller: App\Pages\Login::index
+    controller: App\Controller\DefaultController::login
 
 dashboard:
     path: /dashboard/
@@ -12,27 +12,27 @@ logout:
 
 uploadNotes:
     path: /uploads/notes/
-    controller: App\Pages\Uploads:notes
+    controller: App\Controller\UploadsController::notes
 
 uploadTimetables:
     path: /uploads/timetables/
-    controller: App\Pages\Uploads:timetables
+    controller: App\Controller\UploadsController::timetables
 
 timetables:
     path: /downloads/timetables/
-    controller: App\Pages\Downloads:timetables
+    controller: App\Controller\DefaultController::timetablesDownload
 
 apiTimetables:
     path: /api/timetables/
-    controller: App\Controller\ApiController:timetables
+    controller: App\Controller\ApiController::timetables
 
 notes:
     path: /downloads/notes/
-    controller: App\Pages\Downloads:notes
+    controller: App\Controller\DefaultController::notesDownload
 
 apiNotes:
     path: /api/notes/
-    controller: App\Controller\ApiController:notes
+    controller: App\Controller\ApiController::notes
 
 announcements:
     path: /announcements/
@@ -56,7 +56,7 @@ deleteAnnouncement:
 
 apiAnnouncements:
     path: /api/announcements/
-    controller: App\Controller\ApiController:announcements
+    controller: App\Controller\ApiController::announcements
 
 complaints:
     path: /complaints/
@@ -76,7 +76,7 @@ deleteComplaint:
 
 apiComplaints:
     path: /api/complaints/
-    controller: App\Controller\ApiController:complaints
+    controller: App\Controller\ApiController::complaints
 
 courses:
     path: /courses/
@@ -100,20 +100,20 @@ deleteCourse:
 
 apiCourses:
     path: /api/courses/
-    controller: App\Controller\ApiController:courses
+    controller: App\Controller\ApiController::courses
 
 users:
     path: /users/
-    controller: App\Pages\Users:index
+    controller: App\Pages\Users::index
 
 newUser:
     path: /users/new/
-    controller: App\Pages\Users:new
+    controller: App\Pages\Users::new
 
 apiUsers:
     path: /api/users/
-    controller: App\Controller\ApiController:users
+    controller: App\Controller\ApiController::users
 
 updateUser:
     path: /users/profile/{id}/
-    controller: App\Pages\Users:profile
+    controller: App\Pages\Users::profile

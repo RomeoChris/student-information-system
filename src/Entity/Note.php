@@ -41,6 +41,21 @@ class Note
      */
     private $date_modified;
 
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $year;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $course_id;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $semester;
+
     public function getId()
     {
         return $this->id;
@@ -102,6 +117,42 @@ class Note
     public function setDateModified(?\DateTimeInterface $date_modified): self
     {
         $this->date_modified = $date_modified;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getCourseId(): ?int
+    {
+        return $this->course_id;
+    }
+
+    public function setCourseId(int $course_id): self
+    {
+        $this->course_id = $course_id;
+
+        return $this;
+    }
+
+    public function getSemester(): ?int
+    {
+        return $this->semester;
+    }
+
+    public function setSemester(int $semester): self
+    {
+        $this->semester = $semester;
 
         return $this;
     }
