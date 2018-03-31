@@ -8,36 +8,25 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Login extends AppController
 {
-    private $post;
-    private $token;
-    private $authenticator;
-
-    public function __construct()
-    {
-        $this->post = $this->getPost();
-        $this->token = $this->getToken();
-        $this->authenticator = $this->getAuthenticator();
-    }
-
     public function index() :Response
     {
-        $errorList = [];
-
         if ($this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('dashboard');
 
+        $errorList = [];
+        $token = $this->getPost()->get('token', '');
+        $username = $this->getPost()->get('username', '');
+        $password = $this->getPost()->get('password', '');
+
         if ($this->getRequest()->isMethod('post'))
         {
-            if ($this->token->validate('loginToken', $this->post->get('token')))
+            if ($this->getToken()->validate('loginToken', $token))
             {
-                $username = $this->post->get('username', '');
-                $password = $this->post->get('password', '');
-
                 if (empty($username))
                     $errorList[] = 'Please enter your login';
                 if (empty($password))
                     $errorList[] = 'Please enter your password';
-                if (empty($errorList) && $this->authenticator->login($username, $password))
+                if (empty($errorList) && $this->getAuthenticator()->login($username, $password))
                     return $this->redirectToRoute('dashboard');
                 else
                     $errorList[] = 'Invalid login or password';
@@ -47,9 +36,9 @@ class Login extends AppController
         }
 
         return $this->render('login.html.twig', [
-            'token' => $this->token->generate('loginToken'),
+            'token' => $this->getToken()->generate('loginToken'),
             'errors' => $errorList,
-            'username' => $this->post->get('username'),
+            'username' => $username,
             'pageTitle' => 'Login | SIS',
             'brandName' => 'SIS',
         ]);
