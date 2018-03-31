@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 
-use App\Models\Profile;
+use App\Entity\Profile;
 use App\Core\Token\Token;
 use App\Core\Database\Database;
-use App\Storages\StorageManager;
 use App\Core\Session\AppSession;
 use App\Core\DataTable\DataTable;
 use App\Core\Collection\AppCollection;
@@ -82,14 +81,9 @@ abstract class AppController extends AbstractController
 		return new Response($content, $status, $headers);
 	}
 
-	protected function getStorageManager() :StorageManager
-	{
-		return new StorageManager($this->getDatabase());
-	}
-
 	protected function getAuthenticator() :Authenticator
 	{
-		return new Authenticator($this->getStorageManager()->getProfileStorage(), $this->getSession());
+		return new Authenticator($this->getDoctrine(), $this->getSession());
 	}
 
 	protected function getToken() :Token
@@ -100,7 +94,14 @@ abstract class AppController extends AbstractController
 	protected function getProfile() :Profile
     {
         $userId = $this->getSession()->getInt('identifier');
-        return $this->getStorageManager()->getProfileStorage()->getById($userId);
+        return $this->findProfileById($userId);
+    }
+
+    protected function findProfileById(int $id = 0) :Profile
+    {
+        /** @var $profile Profile */
+        $profile = $this->getDoctrine()->getRepository(Profile::class)->find($id);
+        return $profile;
     }
 
     protected function renderTemplate(string $view = '', array $parameters = []) :Response
@@ -121,7 +122,7 @@ abstract class AppController extends AbstractController
             'footNote' => 'SIS 2017',
             'lecturer' => $this->getAuthenticator()->isLecturer(),
             'headAdmin' => $this->getAuthenticator()->isHeadAdmin(),
-            'profileId' => $this->getProfile()->getIdentifier(),
+            'profileId' => $this->getProfile()->getId(),
             'brandName' => 'SIS',
             'brandName2' => 'SIS',
             'profileRole' => $this->getProfile()->getRole(),
