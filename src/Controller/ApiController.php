@@ -13,7 +13,7 @@ use App\Conversions\AnnouncementConversion;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ApiController extends AppController
+class ApiController extends DefaultController
 {
 
     public function timetables() :Response

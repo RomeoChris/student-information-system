@@ -4,11 +4,11 @@ index:
 
 dashboard:
     path: /dashboard/
-    controller: App\Controller\PageController::dashboard
+    controller: App\Controller\DefaultController::dashboard
 
 logout:
     path: /logout/
-    controller: App\Controller\PageController::logout
+    controller: App\Controller\DefaultController::logout
 
 uploadNotes:
     path: /uploads/notes/
@@ -60,19 +60,19 @@ apiAnnouncements:
 
 complaints:
     path: /complaints/
-    controller: App\Pages\Complaints:index
+    controller: App\Controller\ComplaintsController::index
 
 newComplaint:
     path: /complaints/new/
-    controller: App\Pages\Complaints:new
+    controller: App\Controller\ComplaintsController::new
 
 viewComplaint:
     path: /complaints/view/{id}/
-    controller: App\Pages\Complaints:view
+    controller: App\Controller\ComplaintsController::view
 
 deleteComplaint:
     path: /complaints/delete/{id}/
-    controller: App\Pages\Complaints:delete
+    controller: App\Controller\ComplaintsController::delete
 
 apiComplaints:
     path: /api/complaints/

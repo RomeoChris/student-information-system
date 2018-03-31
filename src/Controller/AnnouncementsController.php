@@ -7,7 +7,7 @@ use App\Entity\Announcement;
 use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 
-class AnnouncementsController extends AppController
+class AnnouncementsController extends DefaultController
 {
 	public function index() :Response
 	{

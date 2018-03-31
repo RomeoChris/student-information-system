@@ -11,6 +11,7 @@ use App\Core\DataTable\DataTable;
 use App\Core\Collection\AppCollection;
 use App\Core\Configuration\Configuration;
 use App\Core\Authenticator\Authenticator;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +19,10 @@ use Symfony\Component\HttpFoundation\ServerBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-abstract class AppController extends AbstractController
+class DefaultController extends AbstractController
 {
 	protected static $ds = DIRECTORY_SEPARATOR;
-	private $entityManager;
+	public $entityManager;
 
 	public function __construct(
 	    EntityManagerInterface $entityManager
@@ -128,6 +129,51 @@ abstract class AppController extends AbstractController
         return new DataTable($this->getDatabaseConfig());
     }
 
+    public function logout() :Response
+    {
+        $profile = $this->getProfile();
+
+        if ($this->getEntityManager()->contains($profile))
+        {
+            $profile->setLastLogin(new DateTime());
+            $this->getEntityManager()->persist($profile);
+            $this->getEntityManager()->flush();
+        }
+        $this->getSession()->destroy();
+        return $this->redirectToRoute('index');
+    }
+
+    public function dashboard() :Response
+    {
+        if (!$this->getAuthenticator()->isLoggedIn())
+            return $this->redirectToRoute('index');
+
+        return $this->renderTemplate('dashboard.html.twig', [
+            'online' => 2,
+            'pageTitle' => 'Dashboard',
+            'complaints' => $this->getComplaints(),
+            'announcements' => $this->getAnnouncements()
+        ]);
+    }
+
+    private function getComplaints() :array
+    {
+        $query = 'SELECT * FROM complaint ORDER BY id DESC LIMIT 3';
+        return $this->getDatabase()->fetchAll($query);
+    }
+
+    private function getAnnouncements() :array
+    {
+        $query = 'SELECT * FROM announcement ORDER BY id DESC LIMIT 3';
+        return $this->getDatabase()->fetchAll($query);
+    }
+
+    private function getUsers(string $role) :int
+    {
+        $query = 'SELECT * FROM profile WHERE role = ?';
+        return $this->getDatabase()->rowCount($query, [$role]);
+    }
+
     private function commonParameters() :array
     {
         return [
@@ -140,7 +186,10 @@ abstract class AppController extends AbstractController
             'brandName' => 'SIS',
             'brandName2' => 'SIS',
             'profileRole' => $this->getProfile()->getRole(),
+            'numberOfAdmins' => $this->getUsers('admin'),
             'profileUsername' => $this->getProfile()->getUsername(),
+            'numberOfStudents' => $this->getUsers('student'),
+            'numberOfLecturers' => $this->getUsers('lecturer'),
         ];
     }
 }
