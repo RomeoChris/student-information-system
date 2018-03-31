@@ -47,15 +47,15 @@
                         {% endif %}
 
                         <div class="form-group">
-                            <label for="desc">Notes Description</label>
-                            <input name="description" value="{{ description }}" type="text" class="form-control" id="desc" placeholder="Enter notes description">
+                            <label for="title">Title</label>
+                            <input name="title" value="{{ title }}" type="text" class="form-control" id="title" placeholder="Enter notes description">
                         </div>
                         <div class="form-group">
                             <label for="courses">Courses</label>
-                            <select class="form-control" name="course" id="courses">
+                            <select class="form-control" name="courseId" id="courses">
                                 {% if courses %}
                                     {% for course in courses %}
-                                        <option>{{ course.name }}</option>
+                                        <option value="{{ course.id }}">{{ course.name }}</option>
                                     {% endfor %}
                                 {% endif %}
                             </select>
