@@ -28,10 +28,10 @@ class CoursesController extends DefaultController
 
         $this->getAuthenticator()->requireAdmin();
 
-        $years = (int)$this->getPost()->get('years', 0) ?? 0;
+        $years = $this->getPost()->getInt('years');
         $errorList = [];
         $courseName = $this->getPost()->get('courseName', '');
-        $departmentId = (int)$this->getPost()->get('departmentId', 0) ?? 0;
+        $departmentId = $this->getPost()->getInt('departmentId');
 
         if ($this->getRequest()->isMethod('post'))
         {

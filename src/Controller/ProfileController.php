@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Course;
 use App\Entity\Profile;
 use DateTime;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +32,7 @@ class ProfileController extends DefaultController
         $role = $this->getPost()->get('role');
         $email = $this->getPost()->get('email');
         $gender = $this->getPost()->get('gender');
-        $courseId = $this->getPost()->get('courseId');
+        $courseId = $this->getPost()->getInt('courseId');
         $username = strtolower($this->getPost()->get('username'));
         $password = $this->getPost()->get('password');
         $lastName = $this->getPost()->get('last_name');
@@ -117,7 +118,7 @@ class ProfileController extends DefaultController
 
         $role = $this->getPost()->get('role', $profile->getRole());
         $email = $this->getPost()->get('email', $profile->getEmail());
-        $gender = $this->getPost()->get('gender', $profile->getGender());
+        $gender = strtolower($this->getPost()->get('gender', $profile->getGender()));
         $courseId = $this->getPost()->get('courseId', $profile->getCourseId());
         $username = strtolower($this->getPost()->get('username', $profile->getUsername()));
         $password = $this->getPost()->get('password', '');
@@ -141,8 +142,8 @@ class ProfileController extends DefaultController
 
             if ($this->updateAction($gender, $profile->getGender()))
             {
-                if (strtolower($gender) != 'male' || strtolower($gender) != 'female')
-                    $errorList[] = 'Invalid gender. user Male or Female';
+                if (!(($gender == 'male') || ($gender == 'female')))
+                    $errorList[] = 'Invalid gender. use Male or Female';
                 $profile->setGender($gender);
             }
 
@@ -193,7 +194,8 @@ class ProfileController extends DefaultController
             'email' => $profile->getEmail(),
             'errors' => $errorList,
             'gender' => $profile->getGender(),
-            'course' => $profile->getCourseId(),
+            'course' => $this->getCourse($profile->getCourseId())->getName(),
+            'courseId' => $profile->getCourseId(),
             'courses' => $this->getCourseRepository()->findAll(),
             'success' => $this->getSession()->flash('updateUserSuccess'),
             'disabled' => $disabled,
@@ -208,17 +210,24 @@ class ProfileController extends DefaultController
     private function findUserByName(string $name = '') :bool
     {
         $user = $this->getProfileRepository()->findOneBy(['username' => $name]);
-        return $this->entityManager->contains($user);
+        return !is_null($user);
     }
 
     private function findUserByEmail(string $email = '') :bool
     {
         $user = $this->getProfileRepository()->findOneBy(['email' => $email]);
-        return $this->entityManager->contains($user);
+        return !is_null($user);
     }
 
     private function updateAction(string $oldValue = '', string $newValue = null) :bool
     {
         return $oldValue != $newValue;
+    }
+
+    private function getCourse(int $id = 0) :Course
+    {
+        /* @var $course Course */
+        $course = $this->getCourseRepository()->find($id);
+        return $course;
     }
 }

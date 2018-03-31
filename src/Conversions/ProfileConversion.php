@@ -6,7 +6,7 @@ namespace App\Conversions;
 class ProfileConversion implements IConversion
 {
     public function getIdField() :string { return 'id'; }
-    public function getTableName() :string { return 'profiles'; }
+    public function getTableName() :string { return 'profile'; }
 
     public function getApiColumns() :array
     {

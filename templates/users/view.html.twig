@@ -65,11 +65,11 @@
                             <div class="form-group row">
                                 <label for="course" class="col-4 col-form-label">Course</label>
                                 <div class="col-7">
-                                    <select class="form-control" name="course" {{ disabled }} id="course">
-                                        <option>{{ course }}</option>
+                                    <select class="form-control" name="courseId" {{ disabled }} id="course">
+                                        <option value="{{ courseId }}">{{ course }}</option>
                                         {% if courses %}
                                             {% for course in courses %}
-                                                <option>{{ course }}</option>
+                                                <option value="{{ course.id }}">{{ course.name }}</option>
                                             {% endfor %}
                                         {% endif %}
                                         <option></option>
