@@ -11,6 +11,7 @@ use App\Core\DataTable\DataTable;
 use App\Core\Collection\AppCollection;
 use App\Core\Configuration\Configuration;
 use App\Core\Authenticator\Authenticator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ServerBag;
@@ -20,8 +21,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 abstract class AppController extends AbstractController
 {
 	protected static $ds = DIRECTORY_SEPARATOR;
+	private $entityManager;
 
-	protected function getRequest() :Request
+	public function __construct(
+	    EntityManagerInterface $entityManager
+    )
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    protected function getRequest() :Request
 	{
 		return Request::createFromGlobals();
 	}
@@ -83,7 +92,7 @@ abstract class AppController extends AbstractController
 
 	protected function getAuthenticator() :Authenticator
 	{
-		return new Authenticator($this->getDoctrine(), $this->getSession());
+		return new Authenticator($this->entityManager, $this->getSession());
 	}
 
 	protected function getToken() :Token
