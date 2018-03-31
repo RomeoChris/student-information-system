@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Pages;
+namespace App\Controller;
 
 
-use App\Controller\AppController;
 use App\Entity\Announcement;
 use DateTime;
 use Symfony\Component\HttpFoundation\Response;
