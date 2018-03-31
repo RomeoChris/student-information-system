@@ -48,8 +48,15 @@
                             <input value="{{ courseName }}" name="courseName" type="text" class="form-control" id="coursename" placeholder="Enter course name">
                         </div>
                         <div class="form-group">
-                            <label for="department">Department</label>
-                            <input value="{{ department }}" name="department" type="text" class="form-control" id="department" placeholder="Enter course department">
+                            <label for="courses">Department</label>
+                            <select class="form-control" name="departmentId" id="courses">
+                                <option value="0"></option>
+                                {% if departments %}
+                                    {% for department in departments %}
+                                        <option value="{{ department.id }}">{{ department.name }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="years">Years</label>

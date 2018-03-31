@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Entity\Course;
+use App\Entity\Department;
 use App\Entity\Profile;
 use App\Core\Token\Token;
 use App\Core\Database\Database;
@@ -12,6 +14,7 @@ use App\Core\Collection\AppCollection;
 use App\Core\Configuration\Configuration;
 use App\Core\Authenticator\Authenticator;
 use DateTime;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -172,6 +175,21 @@ class DefaultController extends AbstractController
     {
         $query = 'SELECT * FROM profile WHERE role = ?';
         return $this->getDatabase()->rowCount($query, [$role]);
+    }
+
+    protected function getProfileRepository() :ObjectRepository
+    {
+        return $this->entityManager->getRepository(Profile::class);
+    }
+
+    protected function getDepartmentRepository() :ObjectRepository
+    {
+        return $this->entityManager->getRepository(Department::class);
+    }
+
+    protected function getCourseRepository() :ObjectRepository
+    {
+        return $this->entityManager->getRepository(Course::class);
     }
 
     private function commonParameters() :array

@@ -80,23 +80,23 @@ apiComplaints:
 
 courses:
     path: /courses/
-    controller: App\Pages\Courses:index
+    controller: App\Controller\CoursesController::index
 
 newCourse:
     path: /courses/new/
-    controller: App\Pages\Courses:new
+    controller: App\Controller\CoursesController::new
 
 viewCourse:
     path: /courses/view/{id}/
-    controller: App\Pages\Courses:view
+    controller: App\Controller\CoursesController::view
 
 editCourse:
     path: /courses/edit/{id}/
-    controller: App\Pages\Courses:edit
+    controller: App\Controller\CoursesController::edit
 
 deleteCourse:
     path: /courses/delete/{id}/
-    controller: App\Pages\Courses:delete
+    controller: App\Controller\CoursesController::delete
 
 apiCourses:
     path: /api/courses/
