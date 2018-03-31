@@ -3,25 +3,13 @@
 namespace App\Pages;
 
 
-use App\Controller\AppController;
-use App\Core\Collection\AppCollection;
-use App\Models\IModel;
-use App\Models\Profile;
+use App\Controller\DefaultController;
+use App\Entity\Profile;
+use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 
-class Users extends AppController
+class Users extends DefaultController
 {
-    private $session;
-    private $courseStorage;
-    private $profileStorage;
-
-    public function __construct()
-    {
-        $this->session = $this->getSession();
-        $this->courseStorage = $this->getStorageManager()->getCourseStorage();
-        $this->profileStorage = $this->getStorageManager()->getProfileStorage();
-    }
-
     public function index() :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
@@ -42,10 +30,9 @@ class Users extends AppController
         $this->getAuthenticator()->requireAdmin();
 
         $role = $this->getPost()->get('role');
-        $date = date('Y-m-d h:i:sa');
         $email = $this->getPost()->get('email');
         $gender = $this->getPost()->get('gender');
-        $course = $this->getPost()->get('course');
+        $courseId = $this->getPost()->get('courseId');
         $username = strtolower($this->getPost()->get('username'));
         $password = $this->getPost()->get('password');
         $lastName = $this->getPost()->get('last_name');
@@ -62,10 +49,10 @@ class Users extends AppController
                 $lastName, $phoneNumber, $role, $gender,
             ];
 
-            if ($this->findUserByName($username)->isSaved())
+            if ($this->findUserByName($username))
                 $errorList[] = 'Username already taken';
 
-            if ($this->findUserByEmail($email)->isSaved())
+            if ($this->findUserByEmail($email))
                 $errorList[] = 'Email already taken';
 
             if (count($fields))
@@ -81,59 +68,49 @@ class Users extends AppController
 
             if (count($errorList) === 0)
             {
-                $profile = new Profile(
-                    0,
-                    $username,
-                    $email,
-                    $firstName,
-                    $lastName,
-                    password_hash($password, 1),
-                    $gender,
-                    $phoneNumber,
-                    $course,
-                    $role,
-                    $date
-                );
+                $profile = new Profile();
+                $profile->setRole($role);
+                $profile->setEmail($email);
+                $profile->setGender($gender);
+                $profile->setUsername($username);
+                $profile->setPassword($password);
+                $profile->setCourseId($courseId);
+                $profile->setLastName($lastName);
+                $profile->setFirstName($firstName);
+                $profile->setPhoneNumber($phoneNumber);
+                $profile->setDateCreated(new DateTime());
 
-                if ($this->profileStorage->save($profile))
-                {
-                    $this->session->set('successAddUser', 'User has been successfully added');
-                    return $this->redirectToRoute('newUser');
-                }
-                else
-                    $errorList[] = 'Internal server error. Please try again later';
+                $this->entityManager->persist($profile);
+                $this->entityManager->flush();
+
+                $this->getSession()->set('successAddUser', 'User has been successfully added');
+                return $this->redirectToRoute('newUser');
             }
         }
 
         return $this->renderTemplate('users/new.html.twig', [
             'errors' => $errorList,
-            'courses' => $this->getCourses(),
-            'success' => $this->session->flash('successAddUser'),
+            'courses' => $this->getCourseRepository()->findAll(),
+            'success' => $this->getSession()->flash('successAddUser'),
             'pageTitle' => 'Add new user to system',
         ]);
     }
 
-    public function profile($id = 0) :Response
+    public function profile(Profile $profile) :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
 
         $errorList = [];
 
-        /* @var $profile Profile */
-        $profile = $this->profileStorage->getById((int)$id ?? 0);
-
-        if (!$profile->isSaved())
-            return $this->redirectToRoute('updateUser', ['id' => $this->getProfile()->getIdentifier()]);
-
         if ($this->getProfile()->getRole() == 'student'
-            && $this->getProfile()->getIdentifier() != $profile->getIdentifier())
-            return $this->redirectToRoute('updateUser', ['id' => $this->getProfile()->getIdentifier()]);
+            && $this->getProfile()->getId() != $profile->getId())
+            return $this->redirectToRoute('updateUser', ['id' => $this->getProfile()->getId()]);
 
         $disabled = 'disabled';
 
         if ($this->getAuthenticator()->isLecturer()
-            && $profile->getIdentifier() == $this->getProfile()->getIdentifier())
+            && $profile->getId() == $this->getProfile()->getId())
             $disabled = '';
 
         if ($this->getAuthenticator()->isAdmin())
@@ -142,7 +119,7 @@ class Users extends AppController
         $role = $this->getPost()->get('role', $profile->getRole());
         $email = $this->getPost()->get('email', $profile->getEmail());
         $gender = $this->getPost()->get('gender', $profile->getGender());
-        $course = $this->getPost()->get('course', $profile->getCourse());
+        $courseId = $this->getPost()->get('courseId', $profile->getCourseId());
         $username = strtolower($this->getPost()->get('username', $profile->getUsername()));
         $password = $this->getPost()->get('password', '');
         $lastName = $this->getPost()->get('last_name', $profile->getLastName());
@@ -158,7 +135,7 @@ class Users extends AppController
 
             if ($this->updateAction($email, $profile->getEmail()))
             {
-                if ($this->findUserByEmail($email)->isSaved())
+                if ($this->findUserByEmail($email))
                     $errorList[] = 'Email already taken';
                 $profile->setEmail($email);
             }
@@ -170,12 +147,12 @@ class Users extends AppController
                 $profile->setGender($gender);
             }
 
-            if ($this->updateAction($course, $profile->getCourse()) && $this->getAuthenticator()->isAdmin())
-                $profile->setCourse($course);
+            if ($this->updateAction($courseId, $profile->getCourseId()) && $this->getAuthenticator()->isAdmin())
+                $profile->setCourseId($courseId);
 
             if ($this->updateAction($username, $profile->getUsername()))
             {
-                if ($this->findUserByName($username)->isSaved())
+                if ($this->findUserByName($username))
                     $errorList[] = 'Username already taken';
                 $profile->setUsername($username);
             }
@@ -203,23 +180,23 @@ class Users extends AppController
 
             if (empty($errorList))
             {
-                if ($this->profileStorage->save($profile))
-                {
-                    $this->session->set('updateUserSuccess', 'Profile has been successfully updated');
-                    return $this->redirectToRoute('updateUser', ['id' => $profile->getIdentifier()]);
-                }
+                $this->entityManager->persist($profile);
+                $this->entityManager->flush();
+
+                $this->getSession()->set('updateUserSuccess', 'Profile has been successfully updated');
+                return $this->redirectToRoute('updateUser', ['id' => $profile->getId()]);
             }
         }
 
         return $this->renderTemplate('users/view.html.twig', [
-            'id' => $profile->getIdentifier(),
+            'id' => $profile->getId(),
             'role' => $profile->getRole(),
             'email' => $profile->getEmail(),
             'errors' => $errorList,
             'gender' => $profile->getGender(),
-            'course' => $profile->getCourse(),
-            'courses' => $this->getCourses(),
-            'success' => $this->session->flash('updateUserSuccess'),
+            'course' => $profile->getCourseId(),
+            'courses' => $this->getCourseRepository()->findAll(),
+            'success' => $this->getSession()->flash('updateUserSuccess'),
             'disabled' => $disabled,
             'username' => $profile->getUsername(),
             'lastName' => $profile->getLastName(),
@@ -229,27 +206,16 @@ class Users extends AppController
         ]);
     }
 
-    private function getCourses() :array
+    private function findUserByName(string $name = '') :bool
     {
-        $courses = $this->courseStorage->getAll();
-        $courseNames = [];
-        foreach ($courses as $course)
-            $courseNames[] = $course['name'];
-        return $courseNames;
+        $user = $this->getProfileRepository()->findOneBy(['username' => $name]);
+        return $this->entityManager->contains($user);
     }
 
-    private function findUserByName(string $name = '') :IModel
+    private function findUserByEmail(string $email = '') :bool
     {
-        $where = 'username = ?';
-        $data = new AppCollection($this->profileStorage->getWhere($where, [$name]));
-        return $this->profileStorage->convertToModel($data);
-    }
-
-    private function findUserByEmail(string $email = '') :IModel
-    {
-        $where = 'email = ?';
-        $data = new AppCollection($this->profileStorage->getWhere($where, [$email]));
-        return $this->profileStorage->convertToModel($data);
+        $user = $this->getProfileRepository()->findOneBy(['email' => $email]);
+        return $this->entityManager->contains($user);
     }
 
     private function updateAction(string $oldValue = '', string $newValue = null) :bool

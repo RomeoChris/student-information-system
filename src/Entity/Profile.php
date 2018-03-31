@@ -76,6 +76,11 @@ class Profile
      */
     private $phone_number;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $gender;
+
     public function getId()
     {
         return $this->id;
@@ -221,6 +226,18 @@ class Profile
     public function setPhoneNumber(?string $phone_number): self
     {
         $this->phone_number = $phone_number;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
 
         return $this;
     }
