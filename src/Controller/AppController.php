@@ -30,6 +30,11 @@ abstract class AppController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    public function getEntityManager() :EntityManagerInterface
+    {
+        return $this->entityManager;
+    }
+
     protected function getRequest() :Request
 	{
 		return Request::createFromGlobals();
