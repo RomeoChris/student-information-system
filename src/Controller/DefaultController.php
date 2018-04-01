@@ -24,120 +24,115 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class DefaultController extends AbstractController
 {
-	protected static $ds = DIRECTORY_SEPARATOR;
-
-	public $session;
-	public $entityManager;
-
-	public function __construct(
-	    EntityManagerInterface $entityManager,
+    protected static $ds = DIRECTORY_SEPARATOR;
+    
+    public $session;
+    public $entityManager;
+    
+    public function __construct(
+        EntityManagerInterface $entityManager,
         SessionInterface $session
     )
     {
         $this->session = $session;
         $this->entityManager = $entityManager;
     }
-
+    
     public function getEntityManager() :EntityManagerInterface
     {
         return $this->entityManager;
     }
-
+    
     protected function getRequest() :Request
-	{
-		return Request::createFromGlobals();
-	}
-
-	protected function getPost() :ParameterBag
-	{
-		return $this->getRequest()->request;
-	}
-
-	protected function getGet() :ParameterBag
-	{
-		return $this->getRequest()->query;
-	}
-
-	protected function getSession() :SessionInterface
-	{
+    {
+        return Request::createFromGlobals();
+    }
+    
+    protected function getPost() :ParameterBag
+    {
+        return $this->getRequest()->request;
+    }
+    
+    protected function getGet() :ParameterBag
+    {
+        return $this->getRequest()->query;
+    }
+    
+    protected function getSession() :SessionInterface
+    {
         return $this->session;
-	}
-
-	protected function getServer() :ServerBag
-	{
-		return $this->getRequest()->server;
-	}
-
-	protected function getConfiguration() :Configuration
-	{
-		return new Configuration($this->getRootDir());
-	}
-
-	protected function getDatabase() :Database
-	{
-		$db = self::getDatabaseConfig();
+    }
+    
+    protected function getServer() :ServerBag
+    {
+        return $this->getRequest()->server;
+    }
+    
+    protected function getConfiguration() :Configuration
+    {
+        return new Configuration($this->getRootDir());
+    }
+    
+    protected function getDatabase() :Database
+    {
+        $db = self::getDatabaseConfig();
         $port = $db->getString('port');
-		$driver = $db->getString('driver');
-		$hostname = $db->getString('hostname');
-		$database = $db->getString('database');
-		$username = $db->getString('username');
-		$password = $db->getString('password');
-		$connectionString = "$driver:host=$hostname;dbname=$database;port=$port";
-		return Database::getInstance($connectionString, $username, $password);
-	}
-
-	protected function getRootDir() :string
-	{
-		return __DIR__ . self::$ds . '..' . self::$ds . '..' . self::$ds;
-	}
-
-	protected function getDatabaseConfig() :AppCollection
-	{
-		return new AppCollection(self::getConfiguration()->getData()['database']);
-	}
-
-	protected function getResponse($content = '', int $status = 200, array $headers = []) :Response
-	{
-		return new Response($content, $status, $headers);
-	}
-
-	protected function getAuthenticator() :Authenticator
-	{
-		return new Authenticator($this->entityManager, $this->getSession());
-	}
-
-	protected function getToken() :Token
+        $driver = $db->getString('driver');
+        $hostname = $db->getString('hostname');
+        $database = $db->getString('database');
+        $username = $db->getString('username');
+        $password = $db->getString('password');
+        $connectionString = "$driver:host=$hostname;dbname=$database;port=$port";
+        return Database::getInstance($connectionString, $username, $password);
+    }
+    
+    protected function getRootDir() :string
+    {
+        return __DIR__ . self::$ds . '..' . self::$ds . '..' . self::$ds;
+    }
+    
+    protected function getDatabaseConfig() :AppCollection
+    {
+        return new AppCollection(self::getConfiguration()->getData()['database']);
+    }
+    
+    protected function getAuthenticator() :Authenticator
+    {
+        return new Authenticator($this->entityManager, $this->getSession());
+    }
+    
+    protected function getToken() :Token
     {
         return new Token($this->getSession());
     }
-
-	protected function getProfile() :Profile
+    
+    protected function getProfile() :Profile
     {
         $userId = (int)$this->getSession()->get('identifier');
         return $this->findProfileById($userId);
     }
-
+    
     protected function findProfileById(int $id = 0) :Profile
     {
         /** @var $profile Profile */
         $profile = $this->getDoctrine()->getRepository(Profile::class)->find($id);
         return $profile;
     }
-
+    
     protected function renderTemplate(string $view = '', array $parameters = []) :Response
     {
         return $this->render($view, array_merge($parameters, $this->commonParameters()));
     }
-
+    
     protected function getDataTable() :DataTable
     {
         return new DataTable($this->getDatabaseConfig());
     }
-
+    
     public function logout() :Response
     {
         $profile = $this->getProfile();
-
+    
         if ($this->getEntityManager()->contains($profile))
         {
             $profile->setLastLogin(new DateTime());
@@ -147,12 +142,12 @@ class DefaultController extends AbstractController
         $this->getSession()->clear();
         return $this->redirectToRoute('index');
     }
-
+    
     public function dashboard() :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
-
+    
         return $this->renderTemplate('dashboard.html.twig', [
             'online' => 2,
             'pageTitle' => 'Dashboard',
@@ -160,37 +155,37 @@ class DefaultController extends AbstractController
             'announcements' => $this->getAnnouncements()
         ]);
     }
-
+    
     public function timetablesDownload() :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
-
+    
         return $this->renderTemplate('downloads/timetables.html.twig', [
             'pageTitle' => 'Timetables downloads'
         ]);
     }
-
+    
     public function notesDownload() :Response
     {
         if (!$this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('index');
-
+    
         return $this->renderTemplate('downloads/notes.html.twig', [
             'pageTitle' => 'Notes downloads'
         ]);
     }
-
+    
     public function login() :Response
     {
         if ($this->getAuthenticator()->isLoggedIn())
             return $this->redirectToRoute('dashboard');
-
+    
         $errorList = [];
         $token = $this->getPost()->get('token', '');
         $username = $this->getPost()->get('username', '');
         $password = $this->getPost()->get('password', '');
-
+    
         if ($this->getRequest()->isMethod('post'))
         {
             if ($this->getToken()->validate('loginToken', $token))
@@ -206,7 +201,7 @@ class DefaultController extends AbstractController
             else
                 $errorList[] = 'Failed to authorize login. Try reloading page';
         }
-
+    
         return $this->render('login.html.twig', [
             'token' => $this->getToken()->generate('loginToken'),
             'errors' => $errorList,
@@ -215,22 +210,22 @@ class DefaultController extends AbstractController
             'brandName' => 'SIS',
         ]);
     }
-
+    
     protected function getProfileRepository() :ObjectRepository
     {
         return $this->entityManager->getRepository(Profile::class);
     }
-
+    
     protected function getDepartmentRepository() :ObjectRepository
     {
         return $this->entityManager->getRepository(Department::class);
     }
-
+    
     protected function getCourseRepository() :ObjectRepository
     {
         return $this->entityManager->getRepository(Course::class);
     }
-
+    
     private function commonParameters() :array
     {
         return [
@@ -249,19 +244,19 @@ class DefaultController extends AbstractController
             'numberOfLecturers' => $this->getUsers('lecturer'),
         ];
     }
-
+    
     private function getComplaints() :array
     {
         $query = 'SELECT * FROM complaint ORDER BY id DESC LIMIT 3';
         return $this->getDatabase()->fetchAll($query);
     }
-
+    
     private function getAnnouncements() :array
     {
         $query = 'SELECT * FROM announcement ORDER BY id DESC LIMIT 3';
         return $this->getDatabase()->fetchAll($query);
     }
-
+    
     private function getUsers(string $role) :int
     {
         $query = 'SELECT * FROM profile WHERE role = ?';
