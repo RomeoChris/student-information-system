@@ -6,6 +6,7 @@ namespace App\Core\Authenticator;
 use App\Core\Session\AppSession;
 use App\Entity\Profile;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Authenticator
 {
@@ -13,10 +14,10 @@ class Authenticator
     private $identifier;
     private $repository;
 
-    public function __construct(EntityManagerInterface $entityManager, AppSession $session)
+    public function __construct(EntityManagerInterface $entityManager, SessionInterface $session)
     {
         $this->session = $session;
-        $this->identifier = $session->getInt('identifier');
+        $this->identifier = (int)$session->get('identifier') ?? 0;
         $this->repository = $entityManager->getRepository(Profile::class);
     }
 

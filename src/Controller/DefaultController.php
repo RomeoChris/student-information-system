@@ -8,7 +8,6 @@ use App\Entity\Department;
 use App\Entity\Profile;
 use App\Core\Token\Token;
 use App\Core\Database\Database;
-use App\Core\Session\AppSession;
 use App\Core\DataTable\DataTable;
 use App\Core\Collection\AppCollection;
 use App\Core\Configuration\Configuration;
@@ -21,16 +20,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ServerBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class DefaultController extends AbstractController
 {
 	protected static $ds = DIRECTORY_SEPARATOR;
+
+	public $session;
 	public $entityManager;
 
 	public function __construct(
-	    EntityManagerInterface $entityManager
+	    EntityManagerInterface $entityManager,
+        SessionInterface $session
     )
     {
+        $this->session = $session;
         $this->entityManager = $entityManager;
     }
 
@@ -54,11 +58,9 @@ class DefaultController extends AbstractController
 		return $this->getRequest()->query;
 	}
 
-	protected function getSession() :AppSession
+	protected function getSession() :SessionInterface
 	{
-        if (!isset($_SESSION))
-            session_start();
-        return new AppSession;
+        return $this->session;
 	}
 
 	protected function getServer() :ServerBag
@@ -111,7 +113,7 @@ class DefaultController extends AbstractController
 
 	protected function getProfile() :Profile
     {
-        $userId = $this->getSession()->getInt('identifier');
+        $userId = (int)$this->getSession()->get('identifier');
         return $this->findProfileById($userId);
     }
 
@@ -142,7 +144,7 @@ class DefaultController extends AbstractController
             $this->getEntityManager()->persist($profile);
             $this->getEntityManager()->flush();
         }
-        $this->getSession()->destroy();
+        $this->getSession()->clear();
         return $this->redirectToRoute('index');
     }
 

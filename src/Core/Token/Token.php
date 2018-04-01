@@ -4,12 +4,13 @@ namespace App\Core\Token;
 
 
 use App\Core\Session\AppSession;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Token
 {
 	private $session;
 
-	public function __construct(AppSession $session)
+	public function __construct(SessionInterface $session)
 	{
 		$this->session = $session;
 	}
