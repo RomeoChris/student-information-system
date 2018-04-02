@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Complaint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -12,6 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Complaint[]    findAll()
  * @method Complaint[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class ComplaintRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
@@ -19,32 +21,8 @@ class ComplaintRepository extends ServiceEntityRepository
         parent::__construct($registry, Complaint::class);
     }
 
-//    /**
-//     * @return Complaint[] Returns an array of Complaint objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function getLatestComplaints(int $limit = 1) :array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->findBy([], ['id' => 'DESC'], $limit);
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Complaint
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

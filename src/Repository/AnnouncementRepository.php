@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Announcement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -12,39 +13,16 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Announcement[]    findAll()
  * @method Announcement[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class AnnouncementRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Announcement::class);
     }
-
-//    /**
-//     * @return Announcement[] Returns an array of Announcement objects
-//     */
-    /*
-    public function findByExampleField($value)
+    
+    public function getLatestAnnouncements(int $limit = 1) :array
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->findBy([], ['id' => 'DESC'], $limit);
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Announcement
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
