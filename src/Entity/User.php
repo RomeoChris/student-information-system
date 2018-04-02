@@ -52,6 +52,31 @@ class User implements UserInterface, \Serializable
      */
     private $is_active;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date_created;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_modified;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $last_login;
+
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $roles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Course", inversedBy="users")
+     */
+    private $course;
+
     public function getId()
     {
         return $this->id;
@@ -153,7 +178,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return [$this->roles];
     }
 
     public function getSalt() :?string
@@ -164,5 +189,60 @@ class User implements UserInterface, \Serializable
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->date_created;
+    }
+
+    public function setDateCreated(\DateTimeInterface $date_created): self
+    {
+        $this->date_created = $date_created;
+
+        return $this;
+    }
+
+    public function getDateModified(): ?\DateTimeInterface
+    {
+        return $this->date_modified;
+    }
+
+    public function setDateModified(?\DateTimeInterface $date_modified): self
+    {
+        $this->date_modified = $date_modified;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->last_login;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $last_login): self
+    {
+        $this->last_login = $last_login;
+
+        return $this;
+    }
+
+    public function setRoles(string $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getCourse(): ?Course
+    {
+        return $this->course;
+    }
+
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,16 @@ class Course
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_modified;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="course")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -102,6 +114,37 @@ class Course
     public function setDateModified(?\DateTimeInterface $date_modified): self
     {
         $this->date_modified = $date_modified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getCourse() === $this) {
+                $user->setCourse(null);
+            }
+        }
 
         return $this;
     }
