@@ -25,7 +25,7 @@
     <div class="topbar">
         <div class="topbar-left">
             <div class="text-center">
-                <a href="{{ path('index') }}" class="logo"><i class="mdi mdi-radar"></i> <span>{{ brandName }}</span></a>
+                <a href="{{ path('index') }}" class="logo"><i class="mdi mdi-radar"></i> <span>{{ shortBrandName }}</span></a>
             </div>
         </div>
 
@@ -39,13 +39,13 @@
                 <li class="list-inline-item dropdown notification-list">
                     <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ asset('static/images/avatar-1.jpg') }}" alt="{{ profileUsername }}" class="rounded-circle">
+                        <img src="{{ asset('static/images/avatar-1.jpg') }}" alt="{{ app.user.username }}" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
                         <div class="dropdown-item noti-title">
-                            <h5 class="text-overflow"><small>{{ profileUsername }}</small> </h5>
+                            <h5 class="text-overflow"><small>{{ app.user.username }}</small> </h5>
                         </div>
-                        <a href="{{ path('updateUser', {'id':profileId}) }}" class="dropdown-item notify-item">
+                        <a href="{{ path('updateUser', {'id':app.user.id}) }}" class="dropdown-item notify-item">
                             <i class="mdi mdi-account-star-variant"></i> <span>Profile</span>
                         </a>
                         <a href="{{ path('logout') }}" class="dropdown-item notify-item">
@@ -74,13 +74,12 @@
         <div class="sidebar-inner slimscrollleft">
             <div id="sidebar-menu">
                 <ul>
-                    <li class="menu-title">{{ profileRole }} | {{ profileUsername }}</li>
                     <li>
                         <a href="{{ path('dashboard') }}" class="waves-effect waves-primary">
-                            <i class="ti-home"></i><span> Dashboard </span></a>
+                        <i class="ti-home"></i><span> Dashboard </span></a>
                     </li>
 
-                    {% if admin %}
+                    {% if is_granted('ROLE_ADMIN') %}
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-user"></i>
                             <span> Users </span> <span class="menu-arrow"></span> </a>
@@ -91,7 +90,7 @@
                     </li>
                     {% endif %}
 
-                    {% if lecturer %}
+                    {% if is_granted('ROLE_LECTURER') %}
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-cloud-up"></i>
                             <span> Upload </span> <span class="menu-arrow"></span> </a>
@@ -114,7 +113,7 @@
                         <a href="javascript:void(0);" class="waves-effect waves-primary"><i class=" ti-announcement"></i>
                             <span> Announcements </span> <span class="menu-arrow"></span> </a>
                         <ul class="list-unstyled">
-                            {% if lecturer %}
+                            {% if is_granted('ROLE_LECTURER') %}
                             <li><a href="{{ path('newAnnouncement') }}">New Announcement</a></li>
                             {% endif %}
                             <li><a href="{{ path('announcements') }}">Announcements</a></li>
@@ -124,10 +123,10 @@
                         <a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-comment-alt"></i>
                             <span> Complaints </span> <span class="menu-arrow"></span> </a>
                         <ul class="list-unstyled">
-                            {% if not lecturer %}
+                            {% if not is_granted('ROLE_LECTURER') %}
                             <li><a href="{{ path('newComplaint') }}">New Complaint</a></li>
                             {% endif %}
-                            {% if admin %}
+                            {% if is_granted('ROLE_ADMIN') %}
                             <li><a href="{{ path('complaints') }}">Complaints</a></li>
                             {% endif %}
                         </ul>
@@ -136,7 +135,7 @@
                         <a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-layers-alt"></i>
                             <span> Courses </span> <span class="menu-arrow"></span> </a>
                         <ul class="list-unstyled">
-                            {% if admin %}
+                            {% if is_granted('ROLE_ADMIN') %}
                             <li><a href="{{ path('newCourse') }}">New course</a></li>
                             {% endif %}
                             <li><a href="{{ path('courses') }}">Courses</a></li>

@@ -5,3 +5,4 @@ twig:
     globals:
         brandName: '%brandName%'
         shortBrandName: '%shortBrandName%'
+        footNote: '%footNote%'

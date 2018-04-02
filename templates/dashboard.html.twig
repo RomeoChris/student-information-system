@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="page-title-box">
-                    <h4 class="page-title">Hi {{ profileUsername }}! Welcome to {{ brandName2 }}</h4>
+                    <h4 class="page-title">Hi {{ app.user.username }}! Welcome to {{ brandName }}</h4>
                     <ol class="breadcrumb float-right">
                         <li class="breadcrumb-item"><a href="#">{{ brandName }}</a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        {% if admin and complaints %}
+        {% if is_granted('ROLE_ADMIN') and complaints %}
             <div class="row">
                 <div class="col-sm-12">
                     <div class="page-title-box">
