@@ -3,37 +3,33 @@
 namespace App\Controller;
 
 
+use App\Core\File\File;
 use App\Entity\Note;
 use App\Entity\Timetable;
 use DateTime;
 use Exception;
-use App\Core\File\File;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UploadsController extends DefaultController
 {
     private $webPath = '/downloads/';
     private $maxFileSize = 5000000;
-
-    public function notes()
+ 
+    public function notes(Request $request)
     {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-
-        $this->getAuthenticator()->requireLecturer();
-
-        $year = $this->getPost()->getInt('year');
-        $title = $this->getPost()->get('title');
-        $semester = $this->getPost()->getInt('semester');
-        $courseId = $this->getPost()->get('courseId');
+        $year = $request->request->getInt('year', 0);
+        $title = $request->request->get('title', '');
+        $semester = $request->request->getInt('semester', 0);
+        $courseId = $request->request->getInt('courseId', 0);
 
         $errorList = [];
 
-        if ($this->getRequest()->isMethod('post'))
+        if ($request->isMethod('post'))
         {
             $file = new File($_FILES['file']);
             $error = File::uploadErrors()[$file->getError()];
-            $author = $this->getProfile()->getUsername();
+            $author = $this->getUser()->getUsername();
 
             if (empty(($title || $courseId || $year || $semester)))
                 $errorList[] = 'All fields are required';
@@ -57,7 +53,7 @@ class UploadsController extends DefaultController
                     $this->entityManager->persist($note);
                     $this->entityManager->flush();
 
-                    $this->getSession()->set('successNote', 'Uploaded successfully');
+                    $this->addFlash('successNote', 'Uploaded successfully');
                     return $this->redirectToRoute('uploadNotes');
                 }
                 $errorList[] = 'Internal server error. Please try again later';
@@ -65,30 +61,24 @@ class UploadsController extends DefaultController
             $errorLis[] = $error;
         }
 
-        return $this->renderTemplate('uploads/notes.html.twig', [
+        return $this->render('uploads/notes.html.twig', [
             'errors' => $errorList,
             'title' => $title,
             'courses' => $this->getCourseRepository()->findAll(),
-            'success' => $this->getSession()->flash('successNote'),
             'pageTitle' => 'Upload notes',
         ]);
     }
 
-    public function timetables() :Response
+    public function timetables(Request $request) :Response
     {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-
-        $this->getAuthenticator()->requireLecturer();
-
-        $title = $this->getPost()->get('title');
+        $title = $request->request->get('title');
         $errorList = [];
 
-        if ($this->getRequest()->isMethod('post'))
+        if ($request->isMethod('post'))
         {
             $file = new File($_FILES['file']);
             $error = File::uploadErrors()[$file->getError()];
-            $author = $this->getProfile()->getUsername();
+            $author = $this->getUser()->getUsername();
 
             if (empty($title))
                 $errorList[] = 'All fields are required';
@@ -117,10 +107,9 @@ class UploadsController extends DefaultController
             $errorList[] = $error;
         }
 
-        return $this->renderTemplate('uploads/timetables.html.twig', [
+        return $this->render('uploads/timetables.html.twig', [
             'title' => $title,
             'errors' => $errorList,
-            'success' => $this->getSession()->flash('successTimeTable'),
             'pageTitle' => 'Upload timetable',
         ]);
     }
