@@ -6,18 +6,16 @@ namespace App\Controller;
 use App\Entity\Course;
 use App\Entity\Department;
 use App\Entity\Profile;
-use App\Core\Token\Token;
-use App\Core\Database\Database;
 use App\Core\DataTable\DataTable;
 use App\Core\Collection\AppCollection;
 use App\Core\Configuration\Configuration;
-use App\Core\Authenticator\Authenticator;
-use DateTime;
+use App\Repository\AnnouncementRepository;
+use App\Repository\ComplaintRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ServerBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -26,7 +24,17 @@ class DefaultController extends AbstractController
 {
     protected static $ds = DIRECTORY_SEPARATOR;
     
+    /**
+     * @var SessionInterface
+     * @deprecated
+     */
     public $session;
+    
+    
+    /**
+     * @var EntityManagerInterface
+     * @deprecated
+     */
     public $entityManager;
     
     public function __construct(
@@ -43,49 +51,47 @@ class DefaultController extends AbstractController
         return $this->entityManager;
     }
     
+    /**
+     * @return Request
+     * @deprecated
+     */
     protected function getRequest() :Request
     {
         return Request::createFromGlobals();
     }
     
+    /**
+     * @return ParameterBag
+     * @deprecated
+     */
     protected function getPost() :ParameterBag
     {
         return $this->getRequest()->request;
     }
     
+    /**
+     * @return ParameterBag
+     * @deprecated
+     */
     protected function getGet() :ParameterBag
     {
         return $this->getRequest()->query;
     }
     
+    /**
+     * @return SessionInterface
+     * @deprecated
+     */
     protected function getSession() :SessionInterface
     {
         return $this->session;
-    }
-    
-    protected function getServer() :ServerBag
-    {
-        return $this->getRequest()->server;
     }
     
     protected function getConfiguration() :Configuration
     {
         return new Configuration($this->getRootDir());
     }
-    
-    protected function getDatabase() :Database
-    {
-        $db = self::getDatabaseConfig();
-        $port = $db->getString('port');
-        $driver = $db->getString('driver');
-        $hostname = $db->getString('hostname');
-        $database = $db->getString('database');
-        $username = $db->getString('username');
-        $password = $db->getString('password');
-        $connectionString = "$driver:host=$hostname;dbname=$database;port=$port";
-        return Database::getInstance($connectionString, $username, $password);
-    }
-    
+ 
     protected function getRootDir() :string
     {
         return __DIR__ . self::$ds . '..' . self::$ds . '..' . self::$ds;
@@ -96,22 +102,11 @@ class DefaultController extends AbstractController
         return new AppCollection(self::getConfiguration()->getData()['database']);
     }
     
-    protected function getAuthenticator() :Authenticator
-    {
-        return new Authenticator($this->entityManager, $this->getSession());
-    }
-    
-    protected function getToken() :Token
-    {
-        return new Token($this->getSession());
-    }
-    
-    protected function getProfile() :Profile
-    {
-        $userId = (int)$this->getSession()->get('identifier');
-        return $this->findProfileById($userId);
-    }
-    
+    /**
+     * @param int $id
+     * @return Profile
+     * @deprecated
+     */
     protected function findProfileById(int $id = 0) :Profile
     {
         /** @var $profile Profile */
@@ -119,147 +114,76 @@ class DefaultController extends AbstractController
         return $profile;
     }
     
+    /**
+     * @param string $view
+     * @param array $parameters
+     * @return Response
+     * @deprecated
+     */
     protected function renderTemplate(string $view = '', array $parameters = []) :Response
     {
-        return $this->render($view, array_merge($parameters, $this->commonParameters()));
+        return $this->render($view, $parameters);
     }
     
     protected function getDataTable() :DataTable
     {
         return new DataTable($this->getDatabaseConfig());
     }
-    
-    public function logout() :Response
+ 
+    public function dashboard(
+        UserRepository $userRepository,
+        ComplaintRepository $complaintRepository,
+        AnnouncementRepository $announcementRepository) :Response
     {
-        $profile = $this->getProfile();
-    
-        if ($this->getEntityManager()->contains($profile))
-        {
-            $profile->setLastLogin(new DateTime());
-            $this->getEntityManager()->persist($profile);
-            $this->getEntityManager()->flush();
-        }
-        $this->getSession()->clear();
-        return $this->redirectToRoute('index');
-    }
-    
-    public function dashboard() :Response
-    {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-    
-        return $this->renderTemplate('dashboard.html.twig', [
+        return $this->render('dashboard.html.twig', [
             'online' => 2,
             'pageTitle' => 'Dashboard',
-            'complaints' => $this->getComplaints(),
-            'announcements' => $this->getAnnouncements()
+            'complaints' => $complaintRepository->getLatestComplaints(3),
+            'announcements' => $announcementRepository->getLatestAnnouncements(3),
+            'numberOfAdmins' => count($userRepository->getUsersWithRole('ROLE_ADMIN')),
+            'numberOfStudents' => count($userRepository->getUsersWithRole('ROLE_USER')),
+            'numberOfLecturers' => count($userRepository->getUsersWithRole('ROLE_LECTURER')),
         ]);
     }
     
     public function timetablesDownload() :Response
     {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-    
-        return $this->renderTemplate('downloads/timetables.html.twig', [
+        return $this->render('downloads/timetables.html.twig', [
             'pageTitle' => 'Timetables downloads'
         ]);
     }
     
     public function notesDownload() :Response
     {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-    
-        return $this->renderTemplate('downloads/notes.html.twig', [
+        return $this->render('downloads/notes.html.twig', [
             'pageTitle' => 'Notes downloads'
         ]);
     }
     
-    public function login() :Response
-    {
-        if ($this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('dashboard');
-    
-        $errorList = [];
-        $token = $this->getPost()->get('token', '');
-        $username = $this->getPost()->get('username', '');
-        $password = $this->getPost()->get('password', '');
-    
-        if ($this->getRequest()->isMethod('post'))
-        {
-            if ($this->getToken()->validate('loginToken', $token))
-            {
-                if (empty($username))
-                    $errorList[] = 'Please enter your login';
-                if (empty($password))
-                    $errorList[] = 'Please enter your password';
-                if (empty($errorList) && $this->getAuthenticator()->login($username, $password))
-                    return $this->redirectToRoute('dashboard');
-                $errorList[] = 'Invalid login or password';
-            }
-            else
-                $errorList[] = 'Failed to authorize login. Try reloading page';
-        }
-    
-        return $this->render('login.html.twig', [
-            'token' => $this->getToken()->generate('loginToken'),
-            'errors' => $errorList,
-            'username' => $username,
-            'pageTitle' => 'Login | SIS',
-            'brandName' => 'SIS',
-        ]);
-    }
-    
+    /**
+     * @return ObjectRepository
+     * @deprecated
+     */
     protected function getProfileRepository() :ObjectRepository
     {
         return $this->entityManager->getRepository(Profile::class);
     }
     
+    /**
+     * @return ObjectRepository
+     * @deprecated
+     */
     protected function getDepartmentRepository() :ObjectRepository
     {
         return $this->entityManager->getRepository(Department::class);
     }
     
+    /**
+     * @return ObjectRepository
+     * @deprecated
+     */
     protected function getCourseRepository() :ObjectRepository
     {
         return $this->entityManager->getRepository(Course::class);
-    }
-    
-    private function commonParameters() :array
-    {
-        return [
-            'admin' => $this->getAuthenticator()->isAdmin(),
-            'student' => $this->getAuthenticator()->isLoggedIn(),
-            'footNote' => 'SIS 2017',
-            'lecturer' => $this->getAuthenticator()->isLecturer(),
-            'headAdmin' => $this->getAuthenticator()->isHeadAdmin(),
-            'profileId' => $this->getProfile()->getId(),
-            'brandName' => 'SIS',
-            'brandName2' => 'SIS',
-            'profileRole' => $this->getProfile()->getRole(),
-            'numberOfAdmins' => $this->getUsers('admin'),
-            'profileUsername' => $this->getProfile()->getUsername(),
-            'numberOfStudents' => $this->getUsers('student'),
-            'numberOfLecturers' => $this->getUsers('lecturer'),
-        ];
-    }
-    
-    private function getComplaints() :array
-    {
-        $query = 'SELECT * FROM complaint ORDER BY id DESC LIMIT 3';
-        return $this->getDatabase()->fetchAll($query);
-    }
-    
-    private function getAnnouncements() :array
-    {
-        $query = 'SELECT * FROM announcement ORDER BY id DESC LIMIT 3';
-        return $this->getDatabase()->fetchAll($query);
-    }
-    
-    private function getUsers(string $role) :int
-    {
-        $query = 'SELECT * FROM profile WHERE role = ?';
-        return $this->getDatabase()->rowCount($query, [$role]);
     }
 }
