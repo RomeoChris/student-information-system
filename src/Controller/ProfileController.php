@@ -5,43 +5,37 @@ namespace App\Controller;
 
 use App\Entity\Course;
 use App\Entity\Profile;
+use App\Repository\CourseRepository;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends DefaultController
 {
     public function index() :Response
     {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-
-        $this->getAuthenticator()->requireLecturer();
-
-        return $this->renderTemplate('users/index.html.twig', [
-            'pageTitle' => 'All users'
-        ]);
+        return $this->render('users/index.html.twig', ['pageTitle' => 'All users']);
     }
 
-    public function new()
+    public function new(
+        Request $request,
+        CourseRepository $repository,
+        EntityManagerInterface $entityManager)
     {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-
-        $this->getAuthenticator()->requireAdmin();
-
-        $role = $this->getPost()->get('role');
-        $email = $this->getPost()->get('email');
-        $gender = $this->getPost()->get('gender');
-        $courseId = $this->getPost()->getInt('courseId');
-        $username = strtolower($this->getPost()->get('username'));
-        $password = $this->getPost()->get('password');
-        $lastName = $this->getPost()->get('last_name');
-        $firstName = $this->getPost()->get('first_name');
-        $phoneNumber = $this->getPost()->get('phone_number');
+        $role = $request->request->get('role', '');
+        $email = $request->request->get('email', '');
+        $gender = $request->request->get('gender', '');
+        $courseId = $request->request->getInt('courseId');
+        $username = strtolower($request->request->get('username', ''));
+        $password = $request->request->get('password', '');
+        $lastName = $request->request->get('last_name', '');
+        $firstName = $request->request->get('first_name', '');
+        $phoneNumber = $request->request->get('phone_number', '');
 
         $errorList = [];
 
-        if ($this->getRequest()->isMethod('post'))
+        if ($request->isMethod('post'))
         {
 
             $fields = [
@@ -80,27 +74,23 @@ class ProfileController extends DefaultController
                 $profile->setPhoneNumber($phoneNumber);
                 $profile->setDateCreated(new DateTime());
 
-                $this->entityManager->persist($profile);
-                $this->entityManager->flush();
+                $entityManager->persist($profile);
+                $entityManager->flush();
 
-                $this->getSession()->set('successAddUser', 'User has been successfully added');
+                $this->addFlash('success', 'User has been successfully added');
                 return $this->redirectToRoute('newUser');
             }
         }
 
-        return $this->renderTemplate('users/new.html.twig', [
+        return $this->render('users/new.html.twig', [
             'errors' => $errorList,
-            'courses' => $this->getCourseRepository()->findAll(),
-            'success' => $this->getSession()->flash('successAddUser'),
+            'courses' => $repository->findAll(),
             'pageTitle' => 'Add new user to system',
         ]);
     }
 
     public function profile(Profile $profile) :Response
     {
-        if (!$this->getAuthenticator()->isLoggedIn())
-            return $this->redirectToRoute('index');
-
         $errorList = [];
 
         if ($this->getProfile()->getRole() == 'student'
