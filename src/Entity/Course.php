@@ -29,11 +29,6 @@ class Course
     private $years;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $department_id;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date_created;
@@ -47,6 +42,11 @@ class Course
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="course")
      */
     private $users;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="courses")
+     */
+    private $department;
 
     public function __construct()
     {
@@ -78,18 +78,6 @@ class Course
     public function setYears(int $years): self
     {
         $this->years = $years;
-
-        return $this;
-    }
-
-    public function getDepartmentId(): ?int
-    {
-        return $this->department_id;
-    }
-
-    public function setDepartmentId(int $department_id): self
-    {
-        $this->department_id = $department_id;
 
         return $this;
     }
@@ -145,6 +133,18 @@ class Course
                 $user->setCourse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDepartment(): ?Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(?Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }
