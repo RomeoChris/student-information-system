@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Core\File\File;
 use App\Entity\Note;
 use App\Entity\Timetable;
+use App\Repository\CourseRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -17,7 +18,10 @@ class UploadsController extends DefaultController
     private $webPath = '/downloads/';
     private $maxFileSize = 5000000;
  
-    public function notes(Request $request)
+    public function notes(
+        Request $request,
+        CourseRepository $repository,
+        EntityManagerInterface $entityManager)
     {
         $year = $request->request->getInt('year', 0);
         $title = $request->request->get('title', '');
@@ -51,10 +55,10 @@ class UploadsController extends DefaultController
                     $note->setSemester($semester);
                     $note->setDateCreated(new DateTime());
 
-                    $this->entityManager->persist($note);
-                    $this->entityManager->flush();
+                    $entityManager->persist($note);
+                    $entityManager->flush();
 
-                    $this->addFlash('successNote', 'Uploaded successfully');
+                    $this->addFlash('success', 'Uploaded successfully');
                     return $this->redirectToRoute('uploadNotes');
                 }
                 $errorList[] = 'Internal server error. Please try again later';
@@ -63,9 +67,8 @@ class UploadsController extends DefaultController
         }
 
         return $this->render('uploads/notes.html.twig', [
-            'errors' => $errorList,
             'title' => $title,
-            'courses' => $this->getCourseRepository()->findAll(),
+            'courses' => $repository->findAll(),
             'pageTitle' => 'Upload notes',
         ]);
     }
