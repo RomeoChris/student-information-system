@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="content">
+
         <div class="container-fluid">
             <br />
             <div class="row">
@@ -21,13 +22,7 @@
                     <div class="card-box">
                         <form role="form" method="post" action="{{ path('editCourse', {'id':id}) }}">
 
-                            {% if success %}
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">{{ success }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endif %}
+
 
                             {% if errors %}
                                 {% for error in errors %}

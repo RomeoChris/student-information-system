@@ -149,8 +149,21 @@
     </div>
 
     <div class="content-page">
-        {% block content %}
-        {% endblock %}
+
+        <div class="content">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+
         <footer class="footer text-right">
             {{ footNote }}
         </footer>

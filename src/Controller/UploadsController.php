@@ -7,6 +7,7 @@ use App\Core\File\File;
 use App\Entity\Note;
 use App\Entity\Timetable;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,7 +70,7 @@ class UploadsController extends DefaultController
         ]);
     }
 
-    public function timetables(Request $request) :Response
+    public function timetables(Request $request, EntityManagerInterface $entityManager) :Response
     {
         $title = $request->request->get('title');
         $errorList = [];
@@ -96,10 +97,10 @@ class UploadsController extends DefaultController
                     $timetable->setAuthor($author);
                     $timetable->setDateCreated(new DateTime());
 
-                    $this->entityManager->persist($timetable);
-                    $this->entityManager->flush();
+                    $entityManager->persist($timetable);
+                    $entityManager->flush();
 
-                    $this->getSession()->set('successTimeTable', 'Uploaded successfully');
+                    $this->addFlash('success', 'Uploaded successfully');
                     return $this->redirectToRoute('uploadTimetables');
                 }
                 $errorList[] = 'Internal server error. Please try again later';
