@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TimetableRepository")
  */
+
 class Timetable
 {
     /**
@@ -23,13 +26,22 @@ class Timetable
 
     /**
      * @ORM\Column(type="string", length=100)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 100,
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\File(maxSize = "10m")
+     *
      */
-    private $path;
+    private $file_name;
 
     /**
      * @ORM\Column(type="datetime")
@@ -66,19 +78,17 @@ class Timetable
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getFileName(): ?string
     {
-        return $this->path;
+        return $this->file_name;
     }
 
-    public function setPath(string $path): self
+    public function setFileName(string $fileName): self
     {
-        $this->path = $path;
-
+        $this->file_name = $fileName;
         return $this;
     }
 
@@ -87,10 +97,11 @@ class Timetable
         return $this->date_created;
     }
 
-    public function setDateCreated(\DateTimeInterface $date_created): self
+    public function setDateCreated(\DateTimeInterface $date_created = null): self
     {
         $this->date_created = $date_created;
-
+        if (is_null($this->date_created))
+            $this->date_created = new \DateTime();
         return $this;
     }
 
