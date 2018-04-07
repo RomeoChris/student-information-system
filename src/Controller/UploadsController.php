@@ -3,120 +3,79 @@
 namespace App\Controller;
 
 
-use App\Core\File\File;
 use App\Entity\Note;
 use App\Entity\Timetable;
-use App\Repository\CourseRepository;
-use DateTime;
+use App\Form\UploadNoteType;
+use App\Form\UploadTimetableType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UploadsController extends DefaultController
 {
-    private $webPath = '/downloads/';
-    private $maxFileSize = 5000000;
- 
-    public function notes(
-        Request $request,
-        CourseRepository $repository,
-        EntityManagerInterface $entityManager)
+    public function notes(Request $request, EntityManagerInterface $entityManager)
     {
-        $year = $request->request->getInt('year', 0);
-        $title = $request->request->get('title', '');
-        $semester = $request->request->getInt('semester', 0);
-        $courseId = $request->request->getInt('courseId', 0);
+        $note = new Note;
+        $form = $this->createForm(UploadNoteType::class, $note);
+        $form->handleRequest($request);
+    
+        if (!$form->isSubmitted() || !$form->isValid())
+            return $this->render('uploads/notes.html.twig', [
+                'form' => $form->createView(),
+                'pageTitle' => 'Upload notes',
+                'formHeader' => 'Upload new notes',
+            ]);
+        
+        /** @var UploadedFile $file */
+        $file = $form->get('file_name')->getData();
+        $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
 
-        $errorList = [];
+        $file->move($this->getRootPath(), $fileName);
 
-        if ($request->isMethod('post'))
-        {
-            $file = new File($_FILES['file']);
-            $error = File::uploadErrors()[$file->getError()];
-            $author = $this->getUser()->getUsername();
+        $note->setAuthor($this->getUser()->getUsername());
+        $note->setFileName($fileName);
+        $note->setDateCreated();
 
-            if (empty(($title || $courseId || $year || $semester)))
-                $errorList[] = 'All fields are required';
+        $entityManager->persist($note);
+        $entityManager->flush();
 
-            if ($file->getSize() <= $this->maxFileSize && $file->getError() == 0)
-            {
-                $file->setFileName();
-                $uploadFile = $file->upload($file->getRootPath($this->getRootPath()));
-
-                if (empty($errorList) && $uploadFile)
-                {
-                    $note = new Note();
-                    $note->setYear($year);
-                    $note->setPath($file->getDownloadPath($this->webPath));
-                    $note->setTitle($title);
-                    $note->setAuthor($author);
-                    $note->setCourseId($courseId);
-                    $note->setSemester($semester);
-                    $note->setDateCreated(new DateTime());
-
-                    $entityManager->persist($note);
-                    $entityManager->flush();
-
-                    $this->addFlash('success', 'Uploaded successfully');
-                    return $this->redirectToRoute('uploadNotes');
-                }
-                $errorList[] = 'Internal server error. Please try again later';
-            }
-            $errorLis[] = $error;
-        }
-
-        return $this->render('uploads/notes.html.twig', [
-            'title' => $title,
-            'courses' => $repository->findAll(),
-            'pageTitle' => 'Upload notes',
-        ]);
+        $this->addFlash('success', 'Notes successfully uploaded');
+        return $this->redirectToRoute('notes');
     }
 
     public function timetables(Request $request, EntityManagerInterface $entityManager) :Response
     {
-        $title = $request->request->get('title');
-        $errorList = [];
-
-        if ($request->isMethod('post'))
-        {
-            $file = new File($_FILES['file']);
-            $error = File::uploadErrors()[$file->getError()];
-            $author = $this->getUser()->getUsername();
-
-            if (empty($title))
-                $errorList[] = 'All fields are required';
-
-            if ($file->getSize() <= $this->maxFileSize && $file->getError() == 0)
-            {
-                $file->setFileName();
-                $uploadFile = $file->upload($file->getRootPath($this->getRootPath()));
-
-                if (!count($errorList) && $uploadFile)
-                {
-                    $timetable = new Timetable();
-                    $timetable->setPath($file->getDownloadPath($this->webPath));
-                    $timetable->setTitle($title);
-                    $timetable->setAuthor($author);
-                    $timetable->setDateCreated(new DateTime());
-
-                    $entityManager->persist($timetable);
-                    $entityManager->flush();
-
-                    $this->addFlash('success', 'Uploaded successfully');
-                    return $this->redirectToRoute('uploadTimetables');
-                }
-                $errorList[] = 'Internal server error. Please try again later';
-            }
-            $errorList[] = $error;
-        }
-
-        return $this->render('uploads/timetables.html.twig', [
-            'title' => $title,
-            'errors' => $errorList,
-            'pageTitle' => 'Upload timetable',
-        ]);
+        $timetable = new Timetable;
+        $form = $this->createForm(UploadTimetableType::class, $timetable);
+        $form->handleRequest($request);
+    
+        if (!$form->isSubmitted() || !$form->isValid())
+            return $this->render('uploads/timetables.html.twig', [
+                'form' => $form->createView(),
+                'pageTitle' => 'Upload timetable',
+                'formHeader' => 'Upload new timetable',
+            ]);
+        
+        /** @var UploadedFile $file */
+        $file = $form->get('file_name')->getData();
+        $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+    
+        $file->move($this->getRootPath(), $fileName);
+    
+        $timetable->setAuthor($this->getUser()->getUsername());
+        $timetable->setFileName($fileName);
+        $timetable->setDateCreated();
+    
+        $entityManager->persist($timetable);
+        $entityManager->flush();
+    
+        $this->addFlash('success', 'Timetable successfully uploaded');
+        return $this->redirectToRoute('timetables');
     }
+    
+    private function generateUniqueFileName() :string { return md5(uniqid()); }
 
     private function getRootPath() :string
     {
