@@ -15,10 +15,7 @@ class ComplaintConversion implements IConversion
             ['db' => 'date_created', 'dt' => 1,
                 'formatter' => function($d) { return date('jS M y', strtotime($d)); }
             ],
-            ['db' => 'date_modified', 'dt' => 2,
-                'formatter' => function($d) { return !empty($d) ? date('jS M y', strtotime($d)) : ''; }
-            ],
-            ['db' => 'id', 'dt' => 3,
+            ['db' => 'id', 'dt' => 2,
                 'formatter' => function($id) {
                     return "<a class='btn btn-info' href='/complaints/view/$id/'>View complaint</a>";
                 }
