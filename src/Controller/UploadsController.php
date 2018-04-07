@@ -5,8 +5,8 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Entity\Timetable;
-use App\Form\UploadNoteType;
-use App\Form\UploadTimetableType;
+use App\Form\NoteType;
+use App\Form\TimetableType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -18,7 +18,7 @@ class UploadsController extends DefaultController
     public function notes(Request $request, EntityManagerInterface $entityManager)
     {
         $note = new Note;
-        $form = $this->createForm(UploadNoteType::class, $note);
+        $form = $this->createForm(NoteType::class, $note);
         $form->handleRequest($request);
     
         if (!$form->isSubmitted() || !$form->isValid())
@@ -48,7 +48,7 @@ class UploadsController extends DefaultController
     public function timetables(Request $request, EntityManagerInterface $entityManager) :Response
     {
         $timetable = new Timetable;
-        $form = $this->createForm(UploadTimetableType::class, $timetable);
+        $form = $this->createForm(TimetableType::class, $timetable);
         $form->handleRequest($request);
     
         if (!$form->isSubmitted() || !$form->isValid())
