@@ -4,12 +4,24 @@
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-        <div class="card-box">
-            <h4 class="header-title m-t-0 text-center">{{ title }}</h4>
-            <br />
-            <p>{{ message }}</p>
-            <a href="{{ path('editAnnouncement', {'id':id}) }}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
-            <a href="{{ path('deleteAnnouncement', {'id':id}) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+        <div class="portlet text-center">
+            <div class="portlet-heading bg-info">
+                <h3 class="portlet-title">
+                    {{ title }}
+                </h3>
+                <div class="portlet-widgets">
+                    <a href="{{ path('editAnnouncement', {'id':id}) }}"><i class="ion-edit"></i></a>
+                    <span class="divider"></span>
+                    <a href="{{ path('deleteAnnouncement', {'id':id}) }}"><i class="ion-trash-b"></i></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div id="bg-info" class="panel-collapse collapse show">
+                <div class="portlet-body">
+                    {{ message }}
+                </div>
+                <div class="text-muted">Posted by {{ author }} {{ dateTime|ago }}</div>
+            </div>
         </div>
     </div>
     <div class="col-md-2"></div>
