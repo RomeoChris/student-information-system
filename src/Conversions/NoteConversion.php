@@ -23,9 +23,9 @@ class NoteConversion implements IConversion
                 'formatter' => function($d) { return !empty($d) ? date('jS M y', strtotime($d)) : ''; }
             ],
             [
-                'db' => 'path', 'dt' => 7,
+                'db' => 'file_name', 'dt' => 7,
                 'formatter' => function($path) {
-                    return "<a class='btn btn-primary' href='$path'><i class='fa fa-download'></i> Download</a>";
+                    return "<a class='btn btn-primary' href='/downloads/$path'><i class='fa fa-download'></i> Download</a>";
                 }
             ]
         ];
