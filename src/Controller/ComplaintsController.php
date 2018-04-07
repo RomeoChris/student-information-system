@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Complaint;
+use App\Form\ComplaintType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,45 +14,33 @@ class ComplaintsController extends DefaultController
 {
     public function index() :Response
     {
-        return $this->render('complaints/index.html.twig', [
-            'pageTitle' => 'All Complaints'
-        ]);
+        $params = ['pageTitle' => 'All Complaints'];
+        return $this->render('complaints/index.html.twig', $params);
     }
 
     public function new(Request $request, EntityManagerInterface $entityManager) :Response
     {
-        $title = $request->request->get('title', '');
-        $author = $this->getUser()->getUsername();
-        $message = $request->request->get('message', '');
-        $errorList = [];
-
-        if ($request->isMethod('post'))
-        {
-            if (empty(($title || $message)))
-                $errorList[] = 'All fields are required';
-
-            if (empty($errorList))
-            {
-                $complaint = new Complaint();
-                $complaint->setTitle($title);
-                $complaint->setAuthor($author);
-                $complaint->setMessage($message);
-                $complaint->setDateCreated(new DateTime());
-
-                $entityManager->persist($complaint);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Complaint has been sent to our admins. Thanks');
-                return $this->redirectToRoute('newComplaint');
-            }
-        }
-
-        return $this->render('complaints/new.html.twig', [
-            'title' => $title,
-            'errors' => $errorList,
-            'message' => $message,
+        $complaint = new Complaint;
+        $form = $this->createForm(ComplaintType::class, $complaint);
+        $form->handleRequest($request);
+    
+        $params = [
+            'form' => $form->createView(),
             'pageTitle' => 'Add new complaint',
-        ]);
+            'formHeader' => 'Add new complaint',
+        ];
+    
+        if (!$form->isSubmitted() || !$form->isValid())
+            return $this->render('complaints/new.html.twig', $params);
+    
+        $complaint->setAuthor($this->getUser()->getUsername());
+        $complaint->setDateCreated();
+    
+        $entityManager->persist($complaint);
+        $entityManager->flush();
+    
+        $this->addFlash('success', 'Complaint has been sent to our admins. Thanks');
+        return $this->redirectToRoute('newComplaint');
     }
 
     public function view(Complaint $complaint) :Response
@@ -59,9 +48,9 @@ class ComplaintsController extends DefaultController
         return $this->render('complaints/view.html.twig', [
             'id' => $complaint->getId(),
             'title' => $complaint->getTitle(),
-            'author' => $complaint->getAuthor(),
             'message' => $complaint->getMessage(),
-            'pageTitle' => $complaint->getTitle()
+            'dateTime' => $complaint->getDateCreated(),
+            'pageTitle' => $complaint->getTitle(),
         ]);
     }
 
