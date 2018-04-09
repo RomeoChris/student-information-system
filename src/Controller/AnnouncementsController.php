@@ -81,10 +81,10 @@ class AnnouncementsController extends DefaultController
         return $this->redirectToRoute('editAnnouncement', ['id' => $announcement->getId()]);
 	}
 
-	public function delete(Announcement $announcement) :Response
+	public function delete(Announcement $announcement, EntityManagerInterface $entityManager) :Response
 	{
-		$this->getEntityManager()->remove($announcement);
-		$this->getEntityManager()->flush();
+		$entityManager->remove($announcement);
+		$entityManager->flush();
 
         $this->addFlash('info', 'Announcement deleted successfully');
         return $this->redirectToRoute('announcements');
