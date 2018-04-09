@@ -7,7 +7,6 @@ use App\Entity\Course;
 use App\Entity\Department;
 use App\Entity\Profile;
 use App\Core\DataTable\DataTable;
-use App\Core\Collection\AppCollection;
 use App\Core\Configuration\Configuration;
 use App\Repository\AnnouncementRepository;
 use App\Repository\ComplaintRepository;
@@ -97,9 +96,9 @@ class DefaultController extends AbstractController
         return __DIR__ . self::$ds . '..' . self::$ds . '..' . self::$ds;
     }
     
-    protected function getDatabaseConfig() :AppCollection
+    protected function getDatabaseConfig() :ParameterBag
     {
-        return new AppCollection(self::getConfiguration()->getData()['database']);
+        return new ParameterBag(self::getConfiguration()->getData()['database']);
     }
     
     /**
