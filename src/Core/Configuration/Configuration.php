@@ -12,11 +12,11 @@ class Configuration
 
     public function __construct(string $path = '')
     {
+        $this->path = __DIR__ . DIRECTORY_SEPARATOR . 'data.ini';
+
         if (!empty($path))
             $this->path = $path . 'data.ini';
-        else
-            $this->path = __DIR__ . DIRECTORY_SEPARATOR . 'data.ini';
-
+        
         try
         {
             $this->data = parse_ini_file($this->path, true);
