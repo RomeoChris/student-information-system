@@ -96,7 +96,8 @@ class Course
     public function setDateCreated(\DateTimeInterface $date_created): self
     {
         $this->date_created = $date_created;
-
+        if (is_null($this->date_created))
+            $this->date_created = new \DateTime();
         return $this;
     }
 
@@ -108,7 +109,8 @@ class Course
     public function setDateModified(?\DateTimeInterface $date_modified): self
     {
         $this->date_modified = $date_modified;
-
+        if (is_null($this->date_modified))
+            $this->date_modified = new \DateTime();
         return $this;
     }
 
