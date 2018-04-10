@@ -48,9 +48,15 @@ class Course
      */
     private $department;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="course")
+     */
+    private $notes;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId()
@@ -145,6 +151,37 @@ class Course
     public function setDepartment(?Department $department): self
     {
         $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->contains($note)) {
+            $this->notes->removeElement($note);
+            // set the owning side to null (unless already changed)
+            if ($note->getCourse() === $this) {
+                $note->setCourse(null);
+            }
+        }
 
         return $this;
     }

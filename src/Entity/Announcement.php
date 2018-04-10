@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnnouncementRepository")
@@ -23,11 +25,19 @@ class Announcement
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min = 5, max = 255)
+     *
      */
     private $message;
 
     /**
      * @ORM\Column(type="string", length=100)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min = 5, max = 99)
+     *
      */
     private $title;
 
@@ -54,7 +64,6 @@ class Announcement
     public function setAuthor(string $author): self
     {
         $this->author = $author;
-
         return $this;
     }
 
@@ -66,7 +75,6 @@ class Announcement
     public function setMessage(string $message): self
     {
         $this->message = $message;
-
         return $this;
     }
 
@@ -78,7 +86,6 @@ class Announcement
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -87,10 +94,11 @@ class Announcement
         return $this->date_created;
     }
 
-    public function setDateCreated(\DateTimeInterface $date_created): self
+    public function setDateCreated(\DateTimeInterface $date_created = null): self
     {
         $this->date_created = $date_created;
-
+        if (is_null($this->date_created))
+            $this->date_created = new \DateTime();
         return $this;
     }
 
@@ -99,10 +107,11 @@ class Announcement
         return $this->date_modified;
     }
 
-    public function setDateModified(?\DateTimeInterface $date_modified): self
+    public function setDateModified(?\DateTimeInterface $date_modified = null): self
     {
         $this->date_modified = $date_modified;
-
+        if (is_null($this->date_modified))
+            $this->date_modified = new \DateTime();
         return $this;
     }
 }

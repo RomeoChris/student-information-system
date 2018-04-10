@@ -4,7 +4,7 @@ namespace App\Core\DataTable;
 
 
 use DataTable\SSP;
-use App\Core\Collection\AppCollection;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class DataTable
 {
@@ -13,7 +13,7 @@ class DataTable
     private $columns;
     private $identifier;
 
-    public function __construct(AppCollection $databaseConfig)
+    public function __construct(ParameterBag $databaseConfig)
     {
         $this->config = $databaseConfig;
     }
@@ -23,7 +23,7 @@ class DataTable
         return SSP::simple($_GET, $this->getMySqlDetails(), $this->table, $this->identifier, $this->columns);
     }
 
-    public function setTable(string $table = '') :void
+    public function setTable(string $table) :void
     {
         $this->table = $table;
     }
@@ -33,7 +33,7 @@ class DataTable
         $this->columns = $columns;
     }
 
-    public function setPrimaryKey(string $key = '') :void
+    public function setPrimaryKey(string $key = 'id') :void
     {
         $this->identifier = $key;
     }
@@ -41,10 +41,10 @@ class DataTable
     private function getMySqlDetails() :array
     {
         return [
-            'db'   => $this->config->getString('database'),
-            'user' => $this->config->getString('username'),
-            'pass' => $this->config->getString('password'),
-            'host' => $this->config->getString('hostname')
+            'db'   => $this->config->get('database', ''),
+            'user' => $this->config->get('username', ''),
+            'pass' => $this->config->get('password', ''),
+            'host' => $this->config->get('hostname', '')
         ];
     }
 }

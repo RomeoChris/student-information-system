@@ -19,9 +19,9 @@ class TimeTableConversion implements IConversion
             ['db' => 'date_modified', 'dt' => 3,
                 'formatter' => function($d) { return !empty($d) ?date('jS M y', strtotime($d)) : ''; }
             ],
-            ['db' => 'path', 'dt' => 4,
+            ['db' => 'file_name', 'dt' => 4,
                 'formatter' => function($path){
-                    return "<a class='btn btn-primary' href='$path'><i class='fa fa-download'></i> Download</a>";
+                    return "<a class='btn btn-primary' href='/downloads/$path'><i class='fa fa-download'></i> Download</a>";
                 }
             ]
         ];
