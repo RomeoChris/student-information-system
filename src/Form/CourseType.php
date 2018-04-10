@@ -4,6 +4,8 @@ namespace App\Form;
 
 
 use App\Entity\Course;
+use App\Entity\Department;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +17,11 @@ class CourseType extends AbstractType
         $builder
             ->add('name')
             ->add('years')
-            ->add('department')
+            ->add('department', EntityType::class, [
+                'class' => Department::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
         ;
     }
 
