@@ -4,6 +4,7 @@ namespace App\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -77,6 +78,13 @@ class User implements UserInterface, \Serializable
      * @ORM\ManyToOne(targetEntity="App\Entity\Course", inversedBy="users")
      */
     private $course;
+
+    private $authChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authChecker)
+    {
+        $this->authChecker = $authChecker;
+    }
 
     public function getId()
     {
@@ -237,5 +245,25 @@ class User implements UserInterface, \Serializable
     {
         $this->course = $course;
         return $this;
+    }
+
+    public function isRoot() :bool
+    {
+        return $this->authChecker->isGranted('ROLE_ROOT');
+    }
+
+    public function isSuperAdmin() :bool
+    {
+        return $this->authChecker->isGranted('ROLE_SUPER_ADMIN');
+    }
+
+    public function isAdmin() :bool
+    {
+        return $this->authChecker->isGranted('ROLE_ADMIN');
+    }
+
+    public function isLecturer() :bool
+    {
+        return $this->authChecker->isGranted('ROLE_LECTURER');
     }
 }
