@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 
-use App\Entity\Profile;
 use App\Core\DataTable\DataTable;
 use App\Core\Configuration\Configuration;
+use App\Entity\User;
 use App\Repository\AnnouncementRepository;
 use App\Repository\ComplaintRepository;
 use App\Repository\UserRepository;
@@ -37,9 +37,9 @@ class DefaultController extends AbstractController
         return new DataTable($this->getDatabaseConfig());
     }
 
-    protected function getProfile() :Profile
+    protected function getProfile() :User
     {
-        /* @var $profile Profile */
+        /* @var $profile User */
         $profile = $this->getUser();
         return $profile;
     }
