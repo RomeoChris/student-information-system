@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -90,7 +91,6 @@ class User implements UserInterface, \Serializable
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -102,7 +102,6 @@ class User implements UserInterface, \Serializable
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -114,7 +113,6 @@ class User implements UserInterface, \Serializable
     public function setFirstName(string $first_name): self
     {
         $this->first_name = $first_name;
-
         return $this;
     }
 
@@ -126,7 +124,6 @@ class User implements UserInterface, \Serializable
     public function setLastName(string $last_name): self
     {
         $this->last_name = $last_name;
-
         return $this;
     }
 
@@ -138,7 +135,6 @@ class User implements UserInterface, \Serializable
     public function setGender(string $gender): self
     {
         $this->gender = $gender;
-
         return $this;
     }
 
@@ -150,7 +146,6 @@ class User implements UserInterface, \Serializable
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -162,7 +157,6 @@ class User implements UserInterface, \Serializable
     public function setIsActive(?bool $is_active): self
     {
         $this->is_active = $is_active;
-
         return $this;
     }
 
@@ -196,10 +190,11 @@ class User implements UserInterface, \Serializable
         return $this->date_created;
     }
 
-    public function setDateCreated(\DateTimeInterface $date_created): self
+    public function setDateCreated(\DateTimeInterface $date_created = null): self
     {
         $this->date_created = $date_created;
-
+        if (is_null($this->date_created))
+            $this->date_created = new \DateTime();
         return $this;
     }
 
@@ -211,7 +206,8 @@ class User implements UserInterface, \Serializable
     public function setDateModified(?\DateTimeInterface $date_modified): self
     {
         $this->date_modified = $date_modified;
-
+        if (is_null($this->date_modified))
+            $this->date_modified = new \DateTime();
         return $this;
     }
 
@@ -223,14 +219,12 @@ class User implements UserInterface, \Serializable
     public function setLastLogin(?\DateTimeInterface $last_login): self
     {
         $this->last_login = $last_login;
-
         return $this;
     }
 
     public function setRoles(string $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -242,7 +236,6 @@ class User implements UserInterface, \Serializable
     public function setCourse(?Course $course): self
     {
         $this->course = $course;
-
         return $this;
     }
 }
