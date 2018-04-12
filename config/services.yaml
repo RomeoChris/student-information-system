@@ -31,3 +31,12 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Conversions\IConversion: ~
+
+    App\Core\DataTable\DataTable:
+        arguments:
+            $databaseHost: '%databaseHost%'
+            $databaseName: '%databaseName%'
+            $databaseUser: '%databaseUser%'
+            $databasePass: '%databasePass%'
+
+    App\Core\DataTable\DataTableInterface: '@App\Core\DataTable\DataTable'

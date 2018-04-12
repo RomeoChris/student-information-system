@@ -4,18 +4,28 @@ namespace App\Core\DataTable;
 
 
 use DataTable\SSP;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
-class DataTable
+class DataTable implements DataTableInterface
 {
     private $table;
-    private $config;
     private $columns;
     private $identifier;
+    private $databaseHost;
+    private $databaseName;
+    private $databaseUser;
+    private $databasePass;
 
-    public function __construct(ParameterBag $databaseConfig)
+    public function __construct(
+        string $databaseHost,
+        string $databaseName,
+        string $databaseUser,
+        string $databasePass
+    )
     {
-        $this->config = $databaseConfig;
+        $this->databaseHost = $databaseHost;
+        $this->databaseName = $databaseName;
+        $this->databaseUser = $databaseUser;
+        $this->databasePass = $databasePass;
     }
 
     public function getData() :array
@@ -41,10 +51,10 @@ class DataTable
     private function getMySqlDetails() :array
     {
         return [
-            'db'   => $this->config->get('database', ''),
-            'user' => $this->config->get('username', ''),
-            'pass' => $this->config->get('password', ''),
-            'host' => $this->config->get('hostname', '')
+            'db'   => $this->databaseName,
+            'user' => $this->databaseUser,
+            'pass' => $this->databasePass,
+            'host' => $this->databaseHost,
         ];
     }
 }
