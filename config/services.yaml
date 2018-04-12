@@ -32,11 +32,11 @@ services:
 
     App\Conversions\IConversion: ~
 
-    App\Core\DataTable\DataTable:
+    App\DataTable\DataTable:
         arguments:
             $databaseHost: '%databaseHost%'
             $databaseName: '%databaseName%'
             $databaseUser: '%databaseUser%'
             $databasePass: '%databasePass%'
 
-    App\Core\DataTable\DataTableInterface: '@App\Core\DataTable\DataTable'
+    App\DataTable\DataTableInterface: '@App\Core\DataTable\DataTable'

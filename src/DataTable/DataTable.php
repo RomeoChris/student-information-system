@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\DataTable;
+namespace App\DataTable;
 
 
 use DataTable\SSP;
