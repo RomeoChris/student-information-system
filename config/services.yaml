@@ -37,4 +37,4 @@ services:
             $databaseUser: '%databaseUser%'
             $databasePass: '%databasePass%'
 
-    App\DataTable\DataTableInterface: '@App\Core\DataTable\DataTable'
+    App\DataTable\DataTableInterface: '@App\DataTable\DataTable'
