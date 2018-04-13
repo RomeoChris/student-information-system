@@ -3,9 +3,7 @@
 namespace App\Conversions;
 
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class AnnouncementConversion extends Controller implements IConversion
+class AnnouncementConversion implements IConversion
 {
     public function getIdField() :string { return 'id'; }
     public function getTableName() :string { return 'announcement'; }

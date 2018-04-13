@@ -9,7 +9,7 @@ use App\Conversions\CourseConversion;
 use App\Conversions\TimeTableConversion;
 use App\Conversions\ComplaintConversion;
 use App\Conversions\AnnouncementConversion;
-use App\Core\DataTable\DataTableInterface;
+use App\DataTable\DataTableInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
