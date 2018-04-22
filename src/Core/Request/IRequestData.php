@@ -1,13 +1,16 @@
 <?php
 
+namespace App\Core\Request;
+
+
 interface IRequestData
 {
-	function get($key) :?string;
-	function getAll() :array;
-	function getSanitized($key) :?string;
-	function count() :int;
-	function has($key) :bool;
-	function isEmpty() :bool;
-	function set($key, $value) :void;
-	function unset($key) :void;
+    public function get($key): ?string;
+    public function getAll(): array;
+    public function getSanitized($key): ?string;
+    public function count(): int;
+    public function has($key): bool;
+    public function isEmpty(): bool;
+    public function set($key, $value): void;
+    public function unset($key): void;
 }

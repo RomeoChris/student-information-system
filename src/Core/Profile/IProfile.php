@@ -1,14 +1,17 @@
 <?php
 
+namespace App\Core\Profile;
+
+
 interface IProfile
 {
-	function getUsername() :string;
-	function getFullName() :string;
-	function getPassword() :string;
-	function getEmail() :string;
-	function getRole() :string;
-	function getDateJoined() :string;
-	function getLastLogin() :string;
-	function getAll() :IRequestData;
-	function getPhoneNumber() :string;
+    public function getUsername(): string;
+    public function getFullName(): string;
+    public function getPassword(): string;
+    public function getEmail(): string;
+    public function getRole(): string;
+    public function getDateJoined(): string;
+    public function getLastLogin(): string;
+    public function getAll(): IRequestData;
+    public function getPhoneNumber(): string;
 }

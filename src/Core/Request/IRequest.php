@@ -1,8 +1,11 @@
 <?php
 
+namespace App\Core\Request;
+
+
 interface IRequest
 {
-	function getPost() :RequestData;
-	function getGet() :RequestData;
-	function getCookie() :RequestData;
+    public function getPost(): RequestData;
+    public function getGet(): RequestData;
+    public function getCookie(): RequestData;
 }
