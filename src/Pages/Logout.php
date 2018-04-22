@@ -1,18 +1,20 @@
 <?php
 
+namespace App\Pages;
+
+
 class Logout
 {
-	private $app;
+    private $app;
 
-	public function __construct(IApp $app)
-	{
-		$this->app = $app;
-	}
+    public function __construct(IApp $app)
+    {
+        $this->app = $app;
+    }
 
-	public function index()
-	{
-		session_destroy();
-		Redirect::to('/login/');
-	}
-
+    public function index()
+    {
+        session_destroy();
+        Redirect::to('/login/');
+    }
 }

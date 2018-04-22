@@ -1,11 +1,12 @@
 <?php
 
-	class Classmates
-	{
-		public function index()
-		{
-			require_once View::renderTemplate('classmates');
-		}
-	}
+namespace App\Pages;
 
-?>
+
+class Classmates
+{
+    public function index()
+    {
+        require_once View::renderTemplate('classmates');
+    }
+}
