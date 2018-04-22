@@ -1,21 +1,24 @@
 <?php
 
+namespace App\Core\App;
+
+
 interface IApp
 {
-	function getRequest() :IRequest;
-	function getSession() :Session;
-	function getConfiguration() :Configuration;
-	function getDatabase() :Database;
-	function getServer() :Server;
-	function getRootPath() :string;
-	function getTemplatesPath() :string;
-	function getIncludesPath() :string;
-	function getSourcePath() :string;
-	function getControllerPath() :string;
-	function getWebPaths() :RequestData;
-	function getDefinitions() :array;
-	function getStudentProfile() :StudentProfile;
-	function getProfile() :Profile;
-	function getUser() :IUser;
-	function getAuthenticator() :Authenticator;
+    public function getRequest(): IRequest;
+    public function getSession(): Session;
+    public function getConfiguration(): Configuration;
+    public function getDatabase(): Database;
+    public function getServer(): Server;
+    public function getRootPath(): string;
+    public function getTemplatesPath(): string;
+    public function getIncludesPath(): string;
+    public function getSourcePath(): string;
+    public function getControllerPath(): string;
+    public function getWebPaths(): RequestData;
+    public function getDefinitions(): array;
+    public function getStudentProfile(): StudentProfile;
+    public function getProfile(): Profile;
+    public function getUser(): IUser;
+    public function getAuthenticator(): Authenticator;
 }
