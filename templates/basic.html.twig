@@ -1,0 +1,45 @@
+{% block header %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ pageTitle }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('static/css/switchery.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('static/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('static/css/icons.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('static/css/style.css') }}">
+</head>
+<body>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block footer %}
+<script>
+    var resizefunc = [];
+</script>
+
+<!-- Plugins  -->
+<script src="{{ asset('static/js/jquery.min.js') }}"></script>
+<script src="{{ asset('static/js/popper.min.js') }}"></script>
+<script src="{{ asset('static/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/js/detect.js') }}"></script>
+<script src="{{ asset('static/js/fastclick.js') }}"></script>
+<script src="{{ asset('static/js/jquery.slimscroll.js') }}"></script>
+<script src="{{ asset('static/js/jquery.blockUI.js') }}"></script>
+<script src="{{ asset('static/js/waves.js') }}"></script>
+<script src="{{ asset('static/js/wow.min.js') }}"></script>
+<script src="{{ asset('static/js/jquery.nicescroll.js') }}"></script>
+<script src="{{ asset('static/js/jquery.scrollTo.min.js') }}"></script>
+<script src="{{ asset('static/js/switchery.min.js') }}"></script>
+
+<!-- Custom main Js -->
+<script src="{{ asset('static/js/jquery.core.js') }}"></script>
+<script src="{{ asset('static/js/jquery.app.js') }}"></script>
+
+</body>
+</html>
+{% endblock %}

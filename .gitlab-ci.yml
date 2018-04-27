@@ -1,0 +1,33 @@
+stages:
+  - build-site
+  - install-dependecies
+  - configure-site
+  - publish-site
+
+build-site:
+  stage: build-site
+  script:
+    - sudo sis-build-site.sh $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL
+  only:
+    - branches
+
+install-dependencies:
+  stage: install-dependecies
+  script:
+    - sudo sis-install-dependencies.sh $CI_COMMIT_REF_NAME
+  only:
+    - branches
+
+configure-site:
+  stage: configure-site
+  script:
+    - sudo sis-configure-site.sh $CI_COMMIT_REF_NAME
+  only:
+    - branches
+
+publish-site:
+  stage: publish-site
+  script:
+    - sudo sis-publish-site.sh $CI_COMMIT_REF_NAME $SITE_NAME
+  only:
+    - branches
