@@ -80,12 +80,12 @@ class App implements IApp
 
     public function getIncludesPath() :string
     {
-        return $this->getSourcePath() . 'includes' . DIRECTORY_SEPARATOR;
+        return $this->getSourcePath() . 'Lib' . DIRECTORY_SEPARATOR;
     }
 
     public function getControllerPath() :string
     {
-        return $this->getSourcePath() . 'pages' . DIRECTORY_SEPARATOR;
+        return $this->getSourcePath() . 'Pages' . DIRECTORY_SEPARATOR;
     }
 
     public function getWebPaths() :RequestData

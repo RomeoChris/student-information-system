@@ -1,7 +1,7 @@
 <?php
 
 define('DS', DIRECTORY_SEPARATOR);
-require __DIR__ . DS . 'vendor' .DS . 'autoload.php';
+require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
 
 use App\Core\App\AppHttpRequest;
 use App\Core\App\AppInitializer;
