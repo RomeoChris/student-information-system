@@ -1,7 +1,4 @@
-data.ini
-.env
-/.idea/
-/public/static/
+.idea/
 /public/downloads/
 composer.lock
 symfony.lock
