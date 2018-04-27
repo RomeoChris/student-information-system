@@ -3,6 +3,8 @@
 namespace App\Core\Course;
 
 
+use App\Core\Database\Database;
+
 class Course
 {
     private $database;

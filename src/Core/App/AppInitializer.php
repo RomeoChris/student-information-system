@@ -3,9 +3,14 @@
 namespace App\Core\App;
 
 
+use App\Core\Configuration\Configuration;
+use App\Core\Database\Database;
+use App\Core\Request\IRequest;
+use App\Core\Request\Request;
+
 class AppInitializer
 {
-    private static $app = null;
+    private static $app;
     private static $ds = DIRECTORY_SEPARATOR;
 
     public static function getApp(): App
@@ -16,7 +21,7 @@ class AppInitializer
         return self::$app;
     }
 
-    private static function setUp()
+    private static function setUp() :void
     {
         session_start();
         self::$app = new App(

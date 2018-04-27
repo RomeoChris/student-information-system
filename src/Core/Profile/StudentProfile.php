@@ -3,6 +3,11 @@
 namespace App\Core\Profile;
 
 
+use App\Core\Database\Database;
+use App\Core\Request\IRequestData;
+use App\Core\Request\RequestData;
+use App\Core\Session\Session;
+
 class StudentProfile implements IProfile
 {
     private $username;

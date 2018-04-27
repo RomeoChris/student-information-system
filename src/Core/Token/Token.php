@@ -3,6 +3,8 @@
 namespace App\Core\Token;
 
 
+use App\Core\Session\Session;
+
 class Token
 {
     public static function generate(string $tokenName): string

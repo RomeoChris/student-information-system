@@ -3,6 +3,11 @@
 namespace App\Pages;
 
 
+use App\Core\App\IApp;
+use App\Core\Controller;
+use App\Core\Routing\Redirect;
+use App\Core\Sanitize\Input;
+
 class Notices extends Controller
 {
     private $app;

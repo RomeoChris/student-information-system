@@ -3,6 +3,11 @@
 namespace App\Pages;
 
 
+use App\Core\App\IApp;
+use App\Core\Controller;
+use App\Core\Page\Page;
+use App\Models\DataModel;
+
 class Dashboard extends Controller
 {
     private $app;

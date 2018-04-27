@@ -3,23 +3,25 @@
 namespace App\Core\Authentication;
 
 
+use App\Core\Routing\Redirect;
+use App\Core\Session\Session;
+
 class Authenticator
 {
-    private $loggedIn = false;
     private $role;
-    private $session;
+    private $loggedIn;
 
     public function __construct(Session $session)
     {
-        $this->session = $session;
-        $this->role = $this->session->get('role');
-        $this->loggedIn = $this->session->has('login');
+        $this->role = $session->get('role');
+        $this->loggedIn = $session->has('login');
     }
 
     public function requireAdmin(): void
     {
         $this->requireLoggedIn();
-        if (!($this->isLoggedIn() && ($this->role == 'admin' || $this->role == 'lecturer'))) {
+        if (!$this->role === 'admin' || !$this->role === 'lecturer')
+        {
             die('<h2 style="text-align: center; color: red">Not Authorized</h2>');
         }
     }
@@ -38,11 +40,11 @@ class Authenticator
 
     public function isAdmin(): bool
     {
-        return ($this->role == 'admin') || ($this->role == 'lecturer');
+        return ($this->role === 'admin') || ($this->role === 'lecturer');
     }
 
     public function isStudent(): bool
     {
-        return ($this->role == 'student');
+        return ($this->role === 'student');
     }
 }

@@ -3,6 +3,9 @@
 namespace App\Models;
 
 
+use App\Core\App\IApp;
+use App\Core\Profile\IProfile;
+
 class DataModel
 {
     private $app;

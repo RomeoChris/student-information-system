@@ -3,6 +3,9 @@
 namespace App\Core\Session;
 
 
+use App\Core\Request\IRequestData;
+use App\Core\Sanitize\Escape;
+
 class Session implements IRequestData
 {
     private $data;

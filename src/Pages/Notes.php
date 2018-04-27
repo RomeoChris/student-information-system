@@ -3,6 +3,10 @@
 namespace App\Pages;
 
 
+use App\Core\App\IApp;
+use App\Core\Controller;
+use App\Models\DataModel;
+
 class Notes extends Controller
 {
     private $app;

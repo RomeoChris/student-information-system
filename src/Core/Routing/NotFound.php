@@ -3,13 +3,15 @@
 namespace App\Core\Routing;
 
 
+use App\Core\Controller;
+
 class NotFound extends Controller
 {
 
     /**
      * @throws \Dwoo\Exception
      */
-    public function index()
+    public function index() :void
     {
         $this->renderTemplate('404.tpl',
             [

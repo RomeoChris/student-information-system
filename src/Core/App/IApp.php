@@ -3,6 +3,17 @@
 namespace App\Core\App;
 
 
+use App\Core\Authentication\Authenticator;
+use App\Core\Configuration\Configuration;
+use App\Core\Database\Database;
+use App\Core\Profile\IUser;
+use App\Core\Profile\Profile;
+use App\Core\Profile\StudentProfile;
+use App\Core\Request\IRequest;
+use App\Core\Request\RequestData;
+use App\Core\Server\Server;
+use App\Core\Session\Session;
+
 interface IApp
 {
     public function getRequest(): IRequest;

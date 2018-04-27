@@ -3,6 +3,9 @@
 namespace App\Core\Routing;
 
 
+use App\Core\App\IApp;
+use App\Pages\Login;
+
 class Route
 {
     private $controller = 'NotFound';

@@ -3,6 +3,12 @@
 namespace App\Pages;
 
 
+use App\Core\App\IApp;
+use App\Core\Controller;
+use App\Core\Routing\Redirect;
+use App\Core\Sanitize\Input;
+use App\Models\DataModel;
+
 class Upload extends Controller
 {
     private $app;

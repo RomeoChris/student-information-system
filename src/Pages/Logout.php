@@ -3,6 +3,9 @@
 namespace App\Pages;
 
 
+use App\Core\App\IApp;
+use App\Core\Routing\Redirect;
+
 class Logout
 {
     private $app;

@@ -3,6 +3,9 @@
 namespace App\Core\Database;
 
 
+use PDO;
+use PDOException;
+
 class Database
 {
     public const SINGLE = 1;
@@ -10,7 +13,7 @@ class Database
     public const ALL = 3;
     public const AFFECTED = 4;
     public const IDENTIFIER = 5;
-    private static $instance = null;
+    private static $instance;
     private static $connection;
 
     public function fetchAll(string $string, array $values = []): array
@@ -97,7 +100,8 @@ class Database
 
     public static function getInstance(string $connection, string $username, string $password): Database
     {
-        if (is_null(self::$instance)) {
+        if (null === self::$instance)
+        {
             self::$instance = new self($connection, $username, $password);
         }
         return self::$instance;
@@ -105,11 +109,14 @@ class Database
 
     private function __construct($connection, $username, $password)
     {
-        try {
+        try
+        {
             self::$connection = new PDO($connection, $username, $password);
             self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             self::$connection->exec('SET NAMES UTF8');
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e)
+        {
             die('An attempt to database failed: ' . $e->getMessage());
         }
     }

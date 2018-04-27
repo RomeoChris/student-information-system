@@ -3,6 +3,9 @@
 namespace App\Core\Profile;
 
 
+use App\Core\Database\Database;
+use App\Core\Session\Session;
+
 class User implements IUser
 {
     private $database;

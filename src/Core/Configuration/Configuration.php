@@ -3,6 +3,9 @@
 namespace App\Core\Configuration;
 
 
+use App\Core\Request\IRequestData;
+use App\Core\Sanitize\Escape;
+
 class Configuration implements IRequestData
 {
     private $data;
@@ -29,7 +32,7 @@ class Configuration implements IRequestData
 
     public function count(): int
     {
-        return count($this->data);
+        return \count($this->data);
     }
 
     public function has($key): bool

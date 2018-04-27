@@ -4,6 +4,9 @@ namespace App\Lib;
 
 
 // function to print class active for the navbars
+use App\Core\Profile\User;
+use App\Core\Routing\Redirect;
+
 function classActive($page, $listItem)
 {
 

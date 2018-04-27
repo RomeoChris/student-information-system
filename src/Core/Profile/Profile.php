@@ -3,6 +3,10 @@
 namespace App\Core\Profile;
 
 
+use App\Core\Request\IRequestData;
+use App\Core\Request\RequestData;
+use App\Core\Session\Session;
+
 class Profile implements IProfile
 {
     private $username;

@@ -3,6 +3,10 @@
 namespace App\Core;
 
 
+use App\Core\App\AppInitializer;
+use App\Core\App\IApp;
+use Dwoo;
+
 class Controller
 {
 

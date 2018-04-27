@@ -3,6 +3,12 @@
 namespace App\Pages;
 
 
+use App\Core\App\IApp;
+use App\Core\Controller;
+use App\Core\Page\Page;
+use App\Core\Routing\Redirect;
+use App\Core\Sanitize\Input;
+
 class Login extends Controller
 {
     private $post;

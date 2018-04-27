@@ -3,6 +3,9 @@
 namespace App\Pages;
 
 
+use App\Core\App\IApp;
+use App\Core\Controller;
+
 class Lecturers extends Controller
 {
     private $app;

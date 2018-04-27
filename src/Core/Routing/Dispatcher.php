@@ -3,6 +3,9 @@
 namespace App\Core\Routing;
 
 
+use App\Core\App\AppHttpRequest;
+use App\Core\App\IApp;
+
 class Dispatcher
 {
     private $request;

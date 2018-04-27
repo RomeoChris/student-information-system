@@ -3,6 +3,9 @@
 namespace App\Core\Server;
 
 
+use App\Core\Request\IRequestData;
+use App\Core\Sanitize\Escape;
+
 class Server implements IRequestData
 {
     private $data;
