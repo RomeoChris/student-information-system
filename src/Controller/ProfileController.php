@@ -4,7 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Course;
-use App\Entity\Profile;
+use App\Entity\User;
 use App\Repository\CourseRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -89,7 +89,7 @@ class ProfileController extends DefaultController
         ]);
     }
 
-    public function profile(Profile $profile) :Response
+    public function profile(User $profile) :Response
     {
         $errorList = [];
 
