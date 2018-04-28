@@ -1,6 +1,5 @@
 .idea/
 /public/downloads/
-composer.lock
 symfony.lock
 
 ###> symfony/framework-bundle ###
