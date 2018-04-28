@@ -1,0 +1,8 @@
+parameters:
+    brandName: 'Student Information System'
+    shortBrandName: 'SIS'
+    footNote: 'SIS 2018'
+    databaseName: 'sis'
+    databaseHost: '127.0.0.1'
+    databaseUser: 'root'
+    databasePass: 'root'

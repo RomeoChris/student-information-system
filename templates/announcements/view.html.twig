@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="portlet text-center">
+            <div class="portlet-heading bg-info">
+                <h3 class="portlet-title">
+                    {{ title }}
+                </h3>
+                <div class="portlet-widgets">
+                    <a href="{{ path('editAnnouncement', {'id':id}) }}"><i class="ion-edit"></i></a>
+                    <span class="divider"></span>
+                    <a href="{{ path('deleteAnnouncement', {'id':id}) }}"><i class="ion-trash-b"></i></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div id="bg-info" class="panel-collapse collapse show">
+                <div class="portlet-body">
+                    {{ message }}
+                </div>
+                <div class="text-muted">Posted by {{ author }} {{ dateTime|ago }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{% endblock %}

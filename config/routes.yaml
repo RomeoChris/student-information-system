@@ -1,0 +1,118 @@
+index:
+    path: /
+    controller: App\Controller\SecurityController::login
+
+dashboard:
+    path: /dashboard/
+    controller: App\Controller\DefaultController::dashboard
+
+logout:
+    path: /logout/
+
+uploadNotes:
+    path: /uploads/notes/
+    controller: App\Controller\UploadsController::notes
+
+uploadTimetables:
+    path: /uploads/timetables/
+    controller: App\Controller\UploadsController::timetables
+
+timetables:
+    path: /downloads/timetables/
+    controller: App\Controller\DefaultController::timetablesDownload
+
+apiTimetables:
+    path: /api/timetables/
+    controller: App\Controller\ApiController::timetables
+
+notes:
+    path: /downloads/notes/
+    controller: App\Controller\DefaultController::notesDownload
+
+apiNotes:
+    path: /api/notes/
+    controller: App\Controller\ApiController::notes
+
+announcements:
+    path: /announcements/
+    controller: App\Controller\AnnouncementsController::index
+
+viewAnnouncement:
+    path: /announcements/view/{id}/
+    controller: App\Controller\AnnouncementsController::view
+
+newAnnouncement:
+    path: /announcements/new/
+    controller: App\Controller\AnnouncementsController::new
+
+editAnnouncement:
+    path: /announcements/edit/{id}/
+    controller: App\Controller\AnnouncementsController::edit
+
+deleteAnnouncement:
+    path: /announcements/delete/{id}/
+    controller: App\Controller\AnnouncementsController::delete
+
+apiAnnouncements:
+    path: /api/announcements/
+    controller: App\Controller\ApiController::announcements
+
+complaints:
+    path: /complaints/
+    controller: App\Controller\ComplaintsController::index
+
+newComplaint:
+    path: /complaints/new/
+    controller: App\Controller\ComplaintsController::new
+
+viewComplaint:
+    path: /complaints/view/{id}/
+    controller: App\Controller\ComplaintsController::view
+
+deleteComplaint:
+    path: /complaints/delete/{id}/
+    controller: App\Controller\ComplaintsController::delete
+
+apiComplaints:
+    path: /api/complaints/
+    controller: App\Controller\ApiController::complaints
+
+courses:
+    path: /courses/
+    controller: App\Controller\CoursesController::index
+
+newCourse:
+    path: /courses/new/
+    controller: App\Controller\CoursesController::new
+
+viewCourse:
+    path: /courses/view/{id}/
+    controller: App\Controller\CoursesController::view
+
+editCourse:
+    path: /courses/edit/{id}/
+    controller: App\Controller\CoursesController::edit
+
+deleteCourse:
+    path: /courses/delete/{id}/
+    controller: App\Controller\CoursesController::delete
+
+apiCourses:
+    path: /api/courses/
+    controller: App\Controller\ApiController::courses
+
+users:
+    path: /users/
+    controller: App\Controller\ProfileController::index
+
+newUser:
+    path: /users/new/
+    controller: App\Controller\ProfileController::new
+
+apiUsers:
+    path: /api/users/
+    controller: App\Controller\ApiController::users
+
+updateUser:
+    path: /users/profile/{id}/
+    controller: App\Controller\ProfileController::profile
