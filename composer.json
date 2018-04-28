@@ -63,23 +63,19 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
-        "pre-install-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "SlowProg\\CopyFile\\ScriptHandler::copy"
-        ],
-        "pre-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "SlowProg\\CopyFile\\ScriptHandler::copy"
-        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "doctrine:schema:update --force": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "SlowProg\\CopyFile\\ScriptHandler::copy",
             "@auto-scripts"
         ],
         "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "SlowProg\\CopyFile\\ScriptHandler::copy",
             "@auto-scripts"
         ]
     },
